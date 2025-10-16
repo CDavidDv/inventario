@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php:*)",
+      "Bash(composer --version)",
+      "Bash(npm run dev:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx vite:*)",
+      "Bash(composer:*)",
+      "Bash(npm run production:*)",
+      "Bash(find:*)",
+      "Bash(curl:*)",
+      "Read(//d/carlo/dowloads/**)",
+      "Bash(taskkill:*)",
+      "Bash(del C:xampphtdocsinventario-8databasemigrations2025_09_11_204316_create_permission_tables.php)",
+      "Bash(del check_permissions.php)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

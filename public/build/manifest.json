@@ -1,0 +1,48 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-DcSnXftu.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/Components/InventoryOutputModals.vue": {
+    "file": "assets/InventoryOutputModals--mgw91Qb.js",
+    "name": "InventoryOutputModals",
+    "src": "resources/js/Components/InventoryOutputModals.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "css": [
+      "assets/app-DcSnXftu.css"
+    ]
+  },
+  "resources/js/Components/ProductionModals.vue": {
+    "file": "assets/ProductionModals-DkJfIOkx.js",
+    "name": "ProductionModals",
+    "src": "resources/js/Components/ProductionModals.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "css": [
+      "assets/app-DcSnXftu.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-BsFl70wQ.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/Components/ProductionModals.vue",
+      "resources/js/Components/InventoryOutputModals.vue"
+    ],
+    "css": [
+      "assets/app-DAZPD5pS.css",
+      "assets/app-DcSnXftu.css"
+    ]
+  }
+}
