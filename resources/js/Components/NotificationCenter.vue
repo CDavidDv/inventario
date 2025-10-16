@@ -249,7 +249,7 @@ const markAsRead = (notification) => {
     
     // Llamar API para marcar como leída
     if (notification.data?.alert_id || alertId !== notification.id) {
-      axios.post(`/api/notifications/${alertId}/mark-read`)
+      axios.post(`api/notifications/${alertId}/mark-read`)
         .catch(error => {
           console.error('Error al marcar notificación como leída:', error)
           notification.read = false
@@ -264,8 +264,8 @@ const markAsRead = (notification) => {
 const markAllAsRead = () => {
   const unreadNotifications = notifications.value.filter(n => !n.read)
   unreadNotifications.forEach(n => n.read = true)
-  
-  axios.post('/api/notifications/mark-all-read')
+
+  axios.post('api/notifications/mark-all-read')
     .catch(error => {
       console.error('Error al marcar todas las notificaciones como leídas:', error)
       unreadNotifications.forEach(n => n.read = false)
@@ -290,7 +290,7 @@ const navigateToItem = (notification) => {
 
 const loadNotifications = async () => {
   try {
-    const response = await axios.get('/api/notifications')
+    const response = await axios.get('api/notifications')
     if (response.data.success) {
       notifications.value = response.data.data
     }
@@ -330,7 +330,8 @@ const hideToast = () => {
 const playNotificationSound = () => {
   // Reproducir sonido solo si el usuario ha interactuado con la página
   try {
-    const audio = new Audio('/sound/videoplayback.mp3')
+    const baseUrl = window.location.origin + (import.meta.env.BASE_URL || '/')
+    const audio = new Audio(`${baseUrl}sound/videoplayback.mp3`)
     audio.volume = 0.3
     audio.play().catch(error => {
       console.log('No se pudo reproducir el sonido de notificación:', error)

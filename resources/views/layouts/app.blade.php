@@ -27,7 +27,7 @@
                         <!-- Logo -->
                         <div class="shrink-0 flex items-center">
                             <a href="{{ route('dashboard') }}" class="flex items-center">
-                                <img src="/images/logo.png" alt="Logo" class="h-8 w-8 rounded-full">
+                                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-8 w-8 rounded-full">
                                 <span class="ml-2 text-xl font-semibold text-gray-800">Sistema Inventario</span>
                             </a>
                         </div>

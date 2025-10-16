@@ -341,7 +341,7 @@ const canCreateKit = computed(() => {
 // Métodos de carga de datos
 const loadElements = async () => {
     try {
-        const response = await axios.get('/production/api/items/element')
+        const response = await axios.get('production/api/items/element')
         elements.value = response.data
     } catch (error) {
         console.error('Error loading elements:', error)
@@ -350,7 +350,7 @@ const loadElements = async () => {
 
 const loadComponents = async () => {
     try {
-        const response = await axios.get('/production/api/items/component')
+        const response = await axios.get('production/api/items/component')
         components.value = response.data
     } catch (error) {
         console.error('Error loading components:', error)
@@ -359,7 +359,7 @@ const loadComponents = async () => {
 
 const loadKits = async () => {
     try {
-        const response = await axios.get('/production/api/items/kit')
+        const response = await axios.get('production/api/items/kit')
         kits.value = response.data
     } catch (error) {
         console.error('Error loading kits:', error)
@@ -368,7 +368,7 @@ const loadKits = async () => {
 
 const loadSuppliers = async () => {
     try {
-        const response = await axios.get('/production/api/suppliers')
+        const response = await axios.get('production/api/suppliers')
         suppliers.value = response.data
     } catch (error) {
         console.error('Error loading suppliers:', error)
@@ -382,7 +382,7 @@ const loadElementData = () => {
 const loadComponentData = async () => {
     if (componentForm.component_id) {
         try {
-            const response = await axios.get(`/production/api/components/${componentForm.component_id}`)
+            const response = await axios.get(`production/api/components/${componentForm.component_id}`)
             selectedComponentData.value = response.data
         } catch (error) {
             console.error('Error loading component data:', error)
@@ -395,7 +395,7 @@ const loadComponentData = async () => {
 const loadKitData = async () => {
     if (kitForm.kit_id) {
         try {
-            const response = await axios.get(`/production/api/components/${kitForm.kit_id}`)
+            const response = await axios.get(`production/api/components/${kitForm.kit_id}`)
             selectedKitData.value = response.data
         } catch (error) {
             console.error('Error loading kit data:', error)

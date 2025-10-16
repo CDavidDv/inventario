@@ -840,9 +840,9 @@ const websiteForm = useForm({
 const loadAllItems = async () => {
     try {
         const [elements, components, kits] = await Promise.all([
-            axios.get('/production/api/items/element'),
-            axios.get('/production/api/items/component'),
-            axios.get('/production/api/items/kit')
+            axios.get('production/api/items/element'),
+            axios.get('production/api/items/component'),
+            axios.get('production/api/items/kit')
         ])
         
         allItems.value = [

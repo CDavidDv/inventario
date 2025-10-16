@@ -5,6 +5,9 @@
 
     RewriteEngine On
 
+    # Detectar automáticamente el subdirectorio base
+    RewriteBase /inventario/
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
