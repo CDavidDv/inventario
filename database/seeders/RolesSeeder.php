@@ -24,7 +24,7 @@ class RolesSeeder extends Seeder
             // Permisos generales
             'view_dashboard',
             'view_reports',
-            
+
             // Permisos de administración
             'admin_access',
             'manage_users',
@@ -34,14 +34,15 @@ class RolesSeeder extends Seeder
             'manage_categories',
             'view_all_movements',
             'export_data',
-            
+
             // Permisos de supervisor
             'supervisor_access',
+            'view_supervisor_dashboard',
             'manage_stock_limits',
             'view_stock_analysis',
             'view_category_analysis',
             'export_stock_reports',
-            
+
             // Permisos de trabajador
             'worker_access',
             'manage_stock_quantities',
@@ -49,7 +50,7 @@ class RolesSeeder extends Seeder
             'add_stock',
             'remove_stock',
             'adjust_stock',
-            
+
             // Permisos de inventario general
             'manage_inventory',
             'view_inventory',
@@ -57,7 +58,17 @@ class RolesSeeder extends Seeder
             'manage_tickets',
             'manage_sales',
             'manage_personal',
-            'manage_configuration'
+            'manage_configuration',
+
+            // Permisos de módulos
+            'view_production',
+            'manage_production',
+            'view_suppliers',
+            'manage_suppliers',
+            'view_movements',
+            'manage_movements',
+            'view_system_logs',
+            'manage_permissions'
         ];
 
         foreach ($permissions as $permission) {
@@ -71,12 +82,15 @@ class RolesSeeder extends Seeder
             'view_dashboard',
             'view_reports',
             'supervisor_access',
+            'view_supervisor_dashboard',
             'manage_stock_limits',
             'view_stock_analysis',
             'view_category_analysis',
             'export_stock_reports',
             'view_inventory',
-            'manage_inventory'
+            'manage_inventory',
+            'view_movements',
+            'view_suppliers'
         ]);
 
         $worker->givePermissionTo([

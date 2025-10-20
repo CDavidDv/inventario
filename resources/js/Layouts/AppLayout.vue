@@ -331,7 +331,7 @@ const canAny = (permissions) => {
 
                                     
                                     <!-- Enlaces de navegación -->
-                                    <NavLink v-if="can('view-dashboard')" :href="route('dashboard')" :active="route().current('dashboard')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
+                                    <NavLink v-if="can('view_dashboard')" :href="route('dashboard')" :active="route().current('dashboard')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
                                         <div class="flex items-center gap-3">
                                             <div class="text-white size-8" :class="sidebarCollapsed ? 'mr-0' : 'mr-3'">
                                                 <BarChart3 class="size-full text-white" />
@@ -340,7 +340,7 @@ const canAny = (permissions) => {
                                         </div>
                                     </NavLink>
 
-                                    <NavLink v-if="can('view-inventory')" :href="route('inventario.index')" :active="route().current('inventario.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
+                                    <NavLink v-if="can('view_inventory')" :href="route('inventario.index')" :active="route().current('inventario.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
                                         <div class="flex items-center gap-3">
                                             <div class="text-white size-8" :class="sidebarCollapsed ? 'mr-0' : 'mr-3'">
                                                 <Package class="size-full text-white" />
@@ -349,7 +349,7 @@ const canAny = (permissions) => {
                                         </div>
                                     </NavLink>
 
-                                    <NavLink v-if="can('view-supervisor-dashboard')"
+                                    <NavLink v-if="can('view_supervisor_dashboard')"
                                         :href="route('supervisor.dashboard')"
                                         :active="route().current('supervisor.*')"
                                         :class="sidebarCollapsed ? 'justify-center' : 'justify-start'"
@@ -362,7 +362,7 @@ const canAny = (permissions) => {
                                         </div>
                                     </NavLink>
 
-                                    <NavLink v-if="can('view-production')" :href="route('production.index')" :active="route().current('production.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
+                                    <NavLink v-if="can('view_production')" :href="route('production.index')" :active="route().current('production.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
                                         <div class="flex items-center gap-3">
                                             <div class="text-white size-8" :class="sidebarCollapsed ? 'mr-0' : 'mr-3'">
                                                 <PackageOpen class="size-full text-white" />
@@ -371,7 +371,7 @@ const canAny = (permissions) => {
                                         </div>
                                     </NavLink>
 
-                                    <NavLink v-if="can('view-suppliers')" :href="route('suppliers.index')" :active="route().current('suppliers.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
+                                    <NavLink v-if="can('view_suppliers')" :href="route('suppliers.index')" :active="route().current('suppliers.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
                                         <div class="flex items-center gap-3">
                                             <div class="text-white size-8" :class="sidebarCollapsed ? 'mr-0' : 'mr-3'">
                                                 <Car class="size-full text-white" />
@@ -381,7 +381,7 @@ const canAny = (permissions) => {
                                     </NavLink>
 
                                     <!-- Movimientos de Inventario -->
-                                    <NavLink v-if="can('view-movements')" :href="route('inventory-movements.index')" :active="route().current('inventory-movements.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
+                                    <NavLink v-if="can('view_movements')" :href="route('inventory-movements.index')" :active="route().current('inventory-movements.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
                                         <div class="flex items-center gap-3">
                                             <div class="text-white size-8" :class="sidebarCollapsed ? 'mr-0' : 'mr-3'">
                                                 <History class="size-full text-white" />
@@ -391,7 +391,7 @@ const canAny = (permissions) => {
                                     </NavLink>
 
                                     <!-- Sistema de Auditoría -->
-                                    <NavLink v-if="can('view-system-logs')" :href="route('system-logs.index')" :active="route().current('system-logs.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
+                                    <NavLink v-if="can('view_system_logs')" :href="route('system-logs.index')" :active="route().current('system-logs.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
                                         <div class="flex items-center gap-3">
                                             <div class="text-white size-8" :class="sidebarCollapsed ? 'mr-0' : 'mr-3'">
                                                 <Shield class="size-full text-white" />
@@ -458,28 +458,28 @@ const canAny = (permissions) => {
                         <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')" class="text-white hover:bg-white/20 rounded-lg">
                             Perfil
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="can('view-dashboard')" :href="route('dashboard')" :active="route().current('dashboard')" class="text-white hover:bg-white/20 rounded-lg">
+                        <ResponsiveNavLink v-if="can('view_dashboard')" :href="route('dashboard')" :active="route().current('dashboard')" class="text-white hover:bg-white/20 rounded-lg">
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="can('view-inventory')" :href="route('inventario.index')" :active="route().current('inventario.*')" class="text-white hover:bg-white/20 rounded-lg">
+                        <ResponsiveNavLink v-if="can('view_inventory')" :href="route('inventario.index')" :active="route().current('inventario.*')" class="text-white hover:bg-white/20 rounded-lg">
                             Inventario
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="can('view-supervisor-dashboard')" :href="route('supervisor.dashboard')" :active="route().current('supervisor.*')" class="text-white hover:bg-white/20 rounded-lg">
+                        <ResponsiveNavLink v-if="can('view_supervisor_dashboard')" :href="route('supervisor.dashboard')" :active="route().current('supervisor.*')" class="text-white hover:bg-white/20 rounded-lg">
                             Supervisor
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="can('view-production')" :href="route('production.index')" :active="route().current('production.*')" class="text-white hover:bg-white/20 rounded-lg">
+                        <ResponsiveNavLink v-if="can('view_production')" :href="route('production.index')" :active="route().current('production.*')" class="text-white hover:bg-white/20 rounded-lg">
                             Producción
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="can('view-suppliers')" :href="route('suppliers.index')" :active="route().current('suppliers.*')" class="text-white hover:bg-white/20 rounded-lg">
+                        <ResponsiveNavLink v-if="can('view_suppliers')" :href="route('suppliers.index')" :active="route().current('suppliers.*')" class="text-white hover:bg-white/20 rounded-lg">
                             Distribuidores
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="can('view-movements')" :href="route('inventory-movements.index')" :active="route().current('inventory-movements.*')" class="text-white hover:bg-white/20 rounded-lg">
+                        <ResponsiveNavLink v-if="can('view_movements')" :href="route('inventory-movements.index')" :active="route().current('inventory-movements.*')" class="text-white hover:bg-white/20 rounded-lg">
                             Movimientos
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="can('view-system-logs')" :href="route('system-logs.index')" :active="route().current('system-logs.*')" class="text-white hover:bg-white/20 rounded-lg">
+                        <ResponsiveNavLink v-if="can('view_system_logs')" :href="route('system-logs.index')" :active="route().current('system-logs.*')" class="text-white hover:bg-white/20 rounded-lg">
                             Auditoría
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="can('manage-permissions')" :href="route('permissions.index')" :active="route().current('permissions.*')" class="text-white hover:bg-white/20 rounded-lg">
+                        <ResponsiveNavLink v-if="can('manage_permissions')" :href="route('permissions.index')" :active="route().current('permissions.*')" class="text-white hover:bg-white/20 rounded-lg">
                             Permisos
                         </ResponsiveNavLink>
 

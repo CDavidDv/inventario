@@ -74,7 +74,7 @@ const submit = () => {
                 </PrimaryButton>
             </div>
             <div class="mt-2">
-                <img src="/images/logo-transparente.png" alt="logo" class="w-1/2 mx-auto">
+                <img :src="`${$page.props.assetUrl}/images/logo-transparente.png`" alt="logo" class="w-1/2 mx-auto">
             </div>
             <div class="mt-2 text-white text-center font-bold">
                 <Link :href="route('password.request')" class="text-sm">

@@ -45,6 +45,7 @@ class HandleInertiaRequests extends Middleware
                     'permissions' => $request->user()->getAllPermissions()->pluck('name')->values()->toArray(),
                 ] : null,
             ],
+            'assetUrl' => config('app.asset_url') ?: config('app.url'),
         ]);
     }
 }
