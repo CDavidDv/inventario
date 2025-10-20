@@ -4,7 +4,7 @@
 <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
     <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         <div class="flex justify-center mb-6">
-            <img src="/images/logo.png" alt="Real de plateros logo" class="rounded-full w-32 h-32">
+            <img src="{{ asset('images/logo.png') }}" alt="Real de plateros logo" class="rounded-full w-32 h-32">
         </div>
 
         @if (session('status'))
@@ -41,7 +41,7 @@
             </div>
 
             <div class="mt-4">
-                <img src="/images/logo-transparente.png" alt="logo" class="w-1/2 mx-auto">
+                <img src="{{ asset('images/logo-transparente.png') }}" alt="logo" class="w-1/2 mx-auto">
             </div>
 
             <div class="mt-4 text-center">
