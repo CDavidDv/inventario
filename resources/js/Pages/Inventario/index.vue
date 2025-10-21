@@ -82,12 +82,38 @@
                             <h2 class="text-lg md:text-xl font-semibold text-gray-800">Elementos Individuales</h2>
                             <p class="text-sm md:text-base text-gray-600">Gestiona los elementos individuales de tu inventario</p>
                         </div>
-                        <div class="flex flex-col sm:flex-row gap-2">
+                        <div class="grid grid-cols-2 sm:flex sm:flex-row gap-2">
+                            <!-- Botón Exportar -->
+                            <div class="relative group">
+                                <button @click="exportItems('element')"
+                                    class="bg-purple-600 hover:bg-purple-700 text-white px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-1 sm:gap-2 transition-colors w-full text-xs sm:text-sm">
+                                    <Download class="w-4 h-4 flex-shrink-0" />
+                                    <span>Exportar</span>
+                                </button>
+                                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                    Exportar elementos a Excel
+                                    <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
+                            <!-- Botón Importar -->
+                            <div class="relative group">
+                                <button @click="openImportModal('element')"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-1 sm:gap-2 transition-colors w-full text-xs sm:text-sm">
+                                    <Upload class="w-4 h-4 flex-shrink-0" />
+                                    <span>Importar</span>
+                                </button>
+                                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                    Importar elementos desde Excel
+                                    <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
                             <!-- Botón Gestionar Categorías -->
                             <div class="relative group">
                                 <button @click="openCategoryModal('element', 'add')"
-                                    class="bg-green-600 hover:bg-green-700 text-white px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-sm">
-                                    <FolderPlus class="w-4 h-4" />
+                                    class="bg-green-600 hover:bg-green-700 text-white px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-1 sm:gap-2 transition-colors w-full text-xs sm:text-sm">
+                                    <FolderPlus class="w-4 h-4 flex-shrink-0" />
                                     <span class="hidden sm:inline">Gestionar Categorías</span>
                                     <span class="sm:hidden">Categorías</span>
                                 </button>
@@ -97,18 +123,18 @@
                                     <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                                 </div>
                             </div>
-                            
+
                             <!-- Botón Nuevo Elemento -->
                             <div class="relative group">
                                 <button @click="handleNewItemClick('element')"
                                     :disabled="!canCreateItem('element')"
                                     :class="[
-                                        'px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-sm',
-                                        canCreateItem('element') 
-                                            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                                        'px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-1 sm:gap-2 transition-colors w-full text-xs sm:text-sm',
+                                        canCreateItem('element')
+                                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
                                             : 'bg-gray-400 text-gray-200 cursor-not-allowed'
                                     ]">
-                                    <Plus class="w-4 h-4" />
+                                    <Plus class="w-4 h-4 flex-shrink-0" />
                                     <span class="hidden sm:inline">Nuevo Elemento</span>
                                     <span class="sm:hidden">Nuevo</span>
                                 </button>
@@ -250,12 +276,38 @@
                             <h2 class="text-lg md:text-xl font-semibold text-gray-800">Componentes</h2>
                             <p class="text-sm md:text-base text-gray-600">Gestiona los componentes que tienen varios items asociados</p>
                         </div>
-                        <div class="flex flex-col sm:flex-row gap-2">
+                        <div class="grid grid-cols-2 sm:flex sm:flex-row gap-2">
+                            <!-- Botón Exportar -->
+                            <div class="relative group">
+                                <button @click="exportItems('component')"
+                                    class="bg-purple-600 hover:bg-purple-700 text-white px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-xs sm:text-sm">
+                                    <Download class="w-4 h-4 flex-shrink-0" />
+                                    <span>Exportar</span>
+                                </button>
+                                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                    Exportar componentes a Excel
+                                    <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
+                            <!-- Botón Importar -->
+                            <div class="relative group">
+                                <button @click="openImportModal('component')"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-xs sm:text-sm">
+                                    <Upload class="w-4 h-4 flex-shrink-0" />
+                                    <span>Importar</span>
+                                </button>
+                                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                    Importar componentes desde Excel
+                                    <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
                             <!-- Botón Gestionar Categorías -->
                             <div class="relative group">
                                 <button @click="openCategoryModal('component', 'add')"
-                                    class="bg-green-600 hover:bg-green-700 text-white px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-sm">
-                                    <FolderPlus class="w-4 h-4" />
+                                    class="bg-green-600 hover:bg-green-700 text-white px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-xs sm:text-sm">
+                                    <FolderPlus class="w-4 h-4 flex-shrink-0" />
                                     <span class="hidden sm:inline">Gestionar Categorías</span>
                                     <span class="sm:hidden">Categorías</span>
                                 </button>
@@ -265,18 +317,18 @@
                                     <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                                 </div>
                             </div>
-                            
+
                             <!-- Botón Nuevo Componente -->
                             <div class="relative group">
                                 <button @click="handleNewItemClick('component')"
                                     :disabled="!canCreateItem('component')"
                                     :class="[
-                                        'px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-sm',
-                                        canCreateItem('component') 
-                                            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                                        'px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-xs sm:text-sm',
+                                        canCreateItem('component')
+                                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
                                             : 'bg-gray-400 text-gray-200 cursor-not-allowed'
                                     ]">
-                                    <Plus class="w-4 h-4" />
+                                    <Plus class="w-4 h-4 flex-shrink-0" />
                                     <span class="hidden sm:inline">Nuevo Componente</span>
                                     <span class="sm:hidden">Nuevo</span>
                                 </button>
@@ -420,12 +472,38 @@
                             <h2 class="text-lg md:text-xl font-semibold text-gray-800">Kits</h2>
                             <p class="text-sm md:text-base text-gray-600">Gestiona los kits que contienen múltiples elementos</p>
                         </div>
-                        <div class="flex flex-col sm:flex-row gap-2">
+                        <div class="grid grid-cols-2 sm:flex sm:flex-row gap-2">
+                            <!-- Botón Exportar -->
+                            <div class="relative group">
+                                <button @click="exportItems('kit')"
+                                    class="bg-purple-600 hover:bg-purple-700 text-white px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-xs sm:text-sm">
+                                    <Download class="w-4 h-4 flex-shrink-0" />
+                                    <span>Exportar</span>
+                                </button>
+                                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                    Exportar kits a Excel
+                                    <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
+                            <!-- Botón Importar -->
+                            <div class="relative group">
+                                <button @click="openImportModal('kit')"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-xs sm:text-sm">
+                                    <Upload class="w-4 h-4 flex-shrink-0" />
+                                    <span>Importar</span>
+                                </button>
+                                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                                    Importar kits desde Excel
+                                    <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
                             <!-- Botón Gestionar Categorías -->
                             <div class="relative group">
                                 <button @click="openCategoryModal('kit', 'add')"
-                                    class="bg-green-600 hover:bg-green-700 text-white px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-sm">
-                                    <FolderPlus class="w-4 h-4" />
+                                    class="bg-green-600 hover:bg-green-700 text-white px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-xs sm:text-sm">
+                                    <FolderPlus class="w-4 h-4 flex-shrink-0" />
                                     <span class="hidden sm:inline">Gestionar Categorías</span>
                                     <span class="sm:hidden">Categorías</span>
                                 </button>
@@ -435,18 +513,18 @@
                                     <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                                 </div>
                             </div>
-                            
+
                             <!-- Botón Nuevo Kit -->
                             <div class="relative group">
                                 <button @click="handleNewItemClick('kit')"
                                     :disabled="!canCreateItem('kit')"
                                     :class="[
-                                        'px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-sm',
-                                        canCreateItem('kit') 
-                                            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                                        'px-2 sm:px-3 md:px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-xs sm:text-sm',
+                                        canCreateItem('kit')
+                                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
                                             : 'bg-gray-400 text-gray-200 cursor-not-allowed'
                                     ]">
-                                    <Plus class="w-4 h-4" />
+                                    <Plus class="w-4 h-4 flex-shrink-0" />
                                     <span class="hidden sm:inline">Nuevo Kit</span>
                                     <span class="sm:hidden">Nuevo</span>
                                 </button>
@@ -605,7 +683,13 @@
         <AssignmentModal :show="showAssignmentModal" :item="currentItem" :item-type="assignmentType"
             :available-items="availableItemsForAssignment" :assigned-items="assignedItems"
             @close="closeAssignmentModal" @remove-assignment="removeAssignment" />
-    
+
+        <!-- MODAL DE IMPORTACIÓN DE EXCEL -->
+        <ExcelImportModal
+            :show="showImportModal"
+            :type="importType"
+            @close="closeImportModal"
+            @imported="handleImportSuccess" />
 
     </AppLayout>
 </template>
@@ -620,9 +704,10 @@ import ItemModal from '@/Components/ItemModal.vue'
 import CategoryModal from '@/Components/CategoryModal.vue'
 import DeleteConfirmationModal from '@/Components/DeleteConfirmationModal.vue'
 import AssignmentModal from '@/Components/AssignmentModal.vue'
+import ExcelImportModal from '@/Components/ExcelImportModal.vue'
 import axios from '@/axios-config'
 import Swal from 'sweetalert2'
-import { FolderPlus, Plus, Search } from 'lucide-vue-next'
+import { FolderPlus, Plus, Search, Download, Upload } from 'lucide-vue-next'
 import { type } from 'jquery';
 
 
@@ -685,11 +770,13 @@ const showItemModal = ref(false)
 const showCategoryModal = ref(false)
 const showDeleteModal = ref(false)
 const showAssignmentModal = ref(false)
+const showImportModal = ref(false)
 
 const itemModalType = ref('element') // element, kit, component
 const itemModalAction = ref('add') // add, edit, assign
 const currentItemType = ref('element')
 const selectedItem = ref(null)
+const importType = ref('element') // element, component, kit
 
 // Variables del modal de asignación
 const currentItem = ref(null)
@@ -1428,6 +1515,42 @@ function handleNewItemClick(type) {
             }
         })
     }
+}
+
+// Funciones de Exportación e Importación
+function exportItems(type) {
+    // Construir URL para exportación
+    window.location.href = `/inventory-excel/export?type=${type}`
+}
+
+function openImportModal(type) {
+    importType.value = type
+    showImportModal.value = true
+}
+
+function closeImportModal() {
+    showImportModal.value = false
+}
+
+async function handleImportSuccess(results) {
+    // Recargar la página para obtener los datos actualizados
+    router.reload({ only: ['elementItems', 'kitItems', 'componentItems'] })
+
+    closeImportModal()
+
+    // Mostrar notificación de éxito
+    await Swal.fire({
+        title: '¡Importación Exitosa!',
+        html: `
+            <div class="text-left">
+                <p><strong>Creados:</strong> ${results.created}</p>
+                <p><strong>Actualizados:</strong> ${results.updated}</p>
+                <p><strong>Omitidos:</strong> ${results.skipped}</p>
+            </div>
+        `,
+        icon: 'success',
+        confirmButtonColor: '#10b981'
+    })
 }
 
 onMounted(() => {

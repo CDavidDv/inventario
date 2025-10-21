@@ -11,7 +11,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
               {{ item.name }}
             </h2>
-            <p class="text-sm text-gray-600">{{ getItemTypeLabel(item.type) }} - {{ item.category?.name || 'Sin categoría' }}</p>
+            <p class="text-sm text-gray-600">{{ getItemTypeLabel(item?.type) }} - {{ item.category?.name || 'Sin categoría' }}</p>
           </div>
         </div>
         <div class="flex items-center gap-2">
@@ -68,7 +68,7 @@
                 </div>
                 <div class="ml-4">
                   <div class="text-sm font-medium text-gray-500">Total Salidas</div>
-                  <div class="text-2xl font-bold text-red-700">-{{ getQuantityDisplay( movement.type, stats.total_exits)  }}</div>
+                  <div class="text-2xl font-bold text-red-700">-{{ getQuantityDisplay( movement?.type, stats.total_exits)  }}</div>
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700">Tipo</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ getItemTypeLabel(item.type) }}</p>
+                  <p class="mt-1 text-sm text-gray-900">{{ getItemTypeLabel(item?.type) }}</p>
                 </div>
               </div>
               

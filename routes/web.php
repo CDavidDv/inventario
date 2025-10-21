@@ -19,6 +19,7 @@ use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\InventoryMovementsController;
 use App\Http\Controllers\SystemLogController;
 use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\InventoryExcelController;
 use Illuminate\Support\Facades\Route;
 
 // NO AUTH ROUTES 
@@ -50,7 +51,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     
     // Rutas de Estado Activo/Inactivo
     Route::post('/items/{item}/toggle-active', [ItemController::class, 'toggleActive'])->name('items.toggle-active');
-    
+
+    // Rutas de Exportación e Importación de Excel
+    Route::prefix('inventory-excel')->name('inventory-excel.')->group(function () {
+        Route::get('/export', [InventoryExcelController::class, 'export'])->name('export');
+        Route::post('/import', [InventoryExcelController::class, 'import'])->name('import');
+        Route::post('/preview', [InventoryExcelController::class, 'preview'])->name('preview');
+        Route::get('/template', [InventoryExcelController::class, 'downloadTemplate'])->name('template');
+    });
+
     // Rutas de Categorías
     Route::resource('categories', CategoryController::class);
     Route::post('/categories/{category}/deactivate', [CategoryController::class, 'deactivate'])->name('categories.deactivate');
