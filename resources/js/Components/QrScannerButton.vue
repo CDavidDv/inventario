@@ -166,7 +166,8 @@ const onDecode = async (result) => {
 
             // Pequeño delay para cerrar el modal antes de navegar
             setTimeout(() => {
-                router.visit(route('items.show', response.data.item.id))
+                // Usar Inertia router que respeta el APP_URL base
+                router.visit(`/items/${response.data.item.id}`)
             }, 300)
         } else {
             errorMessage.value = 'No se encontró ningún item con ese código QR'

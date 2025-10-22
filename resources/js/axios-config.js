@@ -4,8 +4,9 @@ import axios from 'axios';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-// Configurar la URL base
-axios.defaults.baseURL = window.location.origin;
+// Configurar la URL base - obtener desde el meta tag de Laravel o usar el origin
+const baseUrl = document.querySelector('meta[name="app-url"]')?.getAttribute('content') || window.location.origin;
+axios.defaults.baseURL = baseUrl;
 
 // Variable para rastrear si ya estamos refrescando el token
 let isRefreshingToken = false;
