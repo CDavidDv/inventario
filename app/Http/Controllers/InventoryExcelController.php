@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Category;
+use App\Models\InventoryMovement;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ItemsExport;
@@ -19,6 +20,25 @@ class InventoryExcelController extends Controller
     public function export(Request $request)
     {
         $type = $request->input('type', 'all'); // all, element, component, kit
+        $user = auth()->user();
+
+        // Contar items que se exportarán
+        $query = Item::query();
+        if ($type !== 'all') {
+            $query->where('type', $type);
+        }
+        $itemCount = $query->count();
+
+        // Log de exportación
+        \Log::info('Excel Export - Inventario', [
+            'user_id' => $user->id,
+            'user_name' => $user->name . ' ' . ($user->apellido_p ?? ''),
+            'user_email' => $user->email,
+            'type' => $type,
+            'total_items_exported' => $itemCount,
+            'timestamp' => now()->toDateTimeString(),
+            'ip_address' => $request->ip()
+        ]);
 
         $filename = 'inventario_' . ($type === 'all' ? 'completo' : $type) . '_' . date('Y-m-d_His') . '.xlsx';
 
@@ -46,11 +66,43 @@ class InventoryExcelController extends Controller
         try {
             $type = $request->input('type');
             $file = $request->file('file');
+            $user = auth()->user();
+
+            // Log de inicio de importación
+            \Log::info('Excel Import - Inicio', [
+                'user_id' => $user->id,
+                'user_name' => $user->name . ' ' . ($user->apellido_p ?? ''),
+                'user_email' => $user->email,
+                'type' => $type,
+                'filename' => $file->getClientOriginalName(),
+                'file_size' => $file->getSize(),
+                'timestamp' => now()->toDateTimeString(),
+                'ip_address' => $request->ip()
+            ]);
 
             $import = new ItemsImport($type);
             Excel::import($import, $file);
 
             $results = $import->getResults();
+
+            // Log de resultado de importación
+            \Log::info('Excel Import - Completado', [
+                'user_id' => $user->id,
+                'user_name' => $user->name . ' ' . ($user->apellido_p ?? ''),
+                'created' => $results['created'],
+                'updated' => $results['updated'],
+                'skipped' => $results['skipped'],
+                'errors_count' => count($results['errors']),
+                'timestamp' => now()->toDateTimeString()
+            ]);
+
+            // Si hay errores, registrarlos detalladamente
+            if (count($results['errors']) > 0) {
+                \Log::warning('Excel Import - Errores detectados', [
+                    'user_id' => $user->id,
+                    'errors' => $results['errors']
+                ]);
+            }
 
             return response()->json([
                 'success' => true,
@@ -71,6 +123,14 @@ class InventoryExcelController extends Controller
                 ];
             }
 
+            // Log de error de validación
+            \Log::error('Excel Import - Error de Validación', [
+                'user_id' => auth()->id(),
+                'user_name' => auth()->user()->name ?? 'N/A',
+                'errors' => $errors,
+                'timestamp' => now()->toDateTimeString()
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Error de validación en el archivo',
@@ -78,6 +138,16 @@ class InventoryExcelController extends Controller
             ], 422);
 
         } catch (\Exception $e) {
+            // Log de error general
+            \Log::error('Excel Import - Error General', [
+                'user_id' => auth()->id(),
+                'user_name' => auth()->user()->name ?? 'N/A',
+                'error_message' => $e->getMessage(),
+                'error_file' => $e->getFile(),
+                'error_line' => $e->getLine(),
+                'timestamp' => now()->toDateTimeString()
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Error al procesar el archivo: ' . $e->getMessage()
@@ -147,6 +217,17 @@ class InventoryExcelController extends Controller
     public function downloadTemplate(Request $request)
     {
         $type = $request->input('type', 'all');
+        $user = auth()->user();
+
+        // Log de descarga de plantilla
+        \Log::info('Excel Template Download', [
+            'user_id' => $user->id,
+            'user_name' => $user->name . ' ' . ($user->apellido_p ?? ''),
+            'user_email' => $user->email,
+            'type' => $type,
+            'timestamp' => now()->toDateTimeString(),
+            'ip_address' => $request->ip()
+        ]);
 
         $filename = 'plantilla_inventario_' . ($type === 'all' ? 'completo' : $type) . '.xlsx';
 

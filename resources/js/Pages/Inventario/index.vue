@@ -1542,14 +1542,21 @@ async function handleImportSuccess(results) {
     await Swal.fire({
         title: '¡Importación Exitosa!',
         html: `
-            <div class="text-left">
+            <div class="text-left space-y-2">
                 <p><strong>Creados:</strong> ${results.created}</p>
                 <p><strong>Actualizados:</strong> ${results.updated}</p>
                 <p><strong>Omitidos:</strong> ${results.skipped}</p>
             </div>
         `,
         icon: 'success',
-        confirmButtonColor: '#10b981'
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#10b981',
+        width: '400px',
+        padding: '2rem',
+        customClass: {
+            popup: 'swal-import-success',
+            confirmButton: 'px-6 py-3'
+        }
     })
 }
 

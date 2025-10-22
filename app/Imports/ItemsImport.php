@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Item;
 use App\Models\Category;
+use App\Models\InventoryMovement;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class ItemsImport implements ToCollection, WithHeadingRow
 {
     protected $type;
+    protected $importReference;
     protected $results = [
         'created' => 0,
         'updated' => 0,
@@ -25,6 +27,8 @@ class ItemsImport implements ToCollection, WithHeadingRow
     public function __construct($type = 'all')
     {
         $this->type = $type;
+        // Generar una referencia única para este lote de importación
+        $this->importReference = 'IMPORT-' . now()->format('YmdHis');
     }
 
     /**
@@ -47,9 +51,11 @@ class ItemsImport implements ToCollection, WithHeadingRow
 
                     if ($validator->fails()) {
                         $this->results['skipped']++;
+                        $errorMessages = $validator->errors()->all();
                         $this->results['errors'][] = [
                             'row' => $rowNumber,
-                            'errors' => $validator->errors()->all()
+                            'name' => $data['name'] ?? 'N/A',
+                            'errors' => $errorMessages
                         ];
                         continue;
                     }
@@ -59,7 +65,10 @@ class ItemsImport implements ToCollection, WithHeadingRow
                         $this->results['skipped']++;
                         $this->results['errors'][] = [
                             'row' => $rowNumber,
-                            'errors' => ['El tipo del item no coincide con el tipo de importación seleccionado']
+                            'name' => $data['name'] ?? 'N/A',
+                            'errors' => [
+                                "El tipo del item ({$data['type']}) no coincide con el tipo de importación seleccionado ({$this->type})"
+                            ]
                         ];
                         continue;
                     }
@@ -82,40 +91,71 @@ class ItemsImport implements ToCollection, WithHeadingRow
                         'active' => $data['active']
                     ];
 
-                    // Verificar si existe un item con el mismo ID o nombre
-                    if (!empty($data['id'])) {
-                        // Actualizar por ID
+                    // Lógica de actualización o creación:
+                    // 1. Si hay ID y existe en BD -> actualizar
+                    // 2. Si hay ID pero NO existe en BD -> ignorar ID y buscar por nombre
+                    // 3. Si NO hay ID -> buscar por nombre
+                    // 4. Si no existe por ningún criterio -> crear nuevo
+
+                    $item = null;
+                    $shouldUpdate = false;
+
+                    // Primero: intentar buscar por ID si existe y es válido
+                    if (!empty($data['id']) && is_numeric($data['id'])) {
                         $item = Item::find($data['id']);
                         if ($item) {
-                            $item->update($itemData);
-                            $this->results['updated']++;
-                        } else {
-                            // ID no encontrado, crear nuevo
-                            Item::create($itemData);
-                            $this->results['created']++;
+                            // Validar que el tipo coincida
+                            if ($item->type === $data['type']) {
+                                $shouldUpdate = true;
+                            } else {
+                                // ID existe pero el tipo no coincide, buscar por nombre en su lugar
+                                $item = null;
+                            }
                         }
-                    } else {
-                        // Buscar por nombre y tipo
+                    }
+
+                    // Segundo: si no se encontró por ID, buscar por nombre y tipo
+                    if (!$item) {
                         $item = Item::where('name', $data['name'])
                             ->where('type', $data['type'])
                             ->first();
 
                         if ($item) {
-                            // Actualizar item existente
-                            $item->update($itemData);
-                            $this->results['updated']++;
-                        } else {
-                            // Crear nuevo item
-                            Item::create($itemData);
-                            $this->results['created']++;
+                            $shouldUpdate = true;
                         }
+                    }
+
+                    // Tercero: aplicar actualización o creación
+                    if ($shouldUpdate && $item) {
+                        // Actualizar item existente
+                        $quantityBefore = $item->current_stock;
+                        $item->update($itemData);
+                        $quantityAfter = $item->current_stock;
+
+                        // Registrar movimiento de actualización
+                        $this->createInventoryMovement($item, $quantityBefore, $quantityAfter, 'update', $data);
+
+                        $this->results['updated']++;
+                    } else {
+                        // Crear nuevo item (sin incluir ID en los datos)
+                        $newItem = Item::create($itemData);
+
+                        // Registrar movimiento de creación
+                        $this->createInventoryMovement($newItem, 0, $newItem->current_stock, 'create', $data);
+
+                        $this->results['created']++;
                     }
 
                 } catch (\Exception $e) {
                     $this->results['skipped']++;
                     $this->results['errors'][] = [
                         'row' => $rowNumber,
-                        'errors' => ['Error al procesar: ' . $e->getMessage()]
+                        'name' => $data['name'] ?? 'N/A',
+                        'errors' => [
+                            'Error al procesar: ' . $e->getMessage(),
+                            'Línea de código: ' . $e->getLine(),
+                            'Archivo: ' . basename($e->getFile())
+                        ]
                     ];
                 }
             }
@@ -287,15 +327,89 @@ class ItemsImport implements ToCollection, WithHeadingRow
             ->first();
 
         if (!$category) {
+            // Colores por defecto según el tipo
+            $defaultColors = [
+                'element' => '#3B82F6',    // Azul
+                'component' => '#10B981',   // Verde
+                'kit' => '#F59E0B'          // Naranja
+            ];
+
             // Crear nueva categoría
             $category = Category::create([
                 'name' => $categoryName,
                 'type' => $type,
-                'description' => 'Categoría creada automáticamente durante importación'
+                'description' => 'Categoría creada automáticamente durante importación',
+                'color' => $defaultColors[$type] ?? '#6B7280', // Gris por defecto
+                'active' => true,
+                'created_by' => auth()->id() ?? 1 // Usuario autenticado o admin por defecto
             ]);
+
+            \Log::info("Categoría '{$categoryName}' creada automáticamente con ID: {$category->id}");
         }
 
         return $category;
+    }
+
+    /**
+     * Crear movimiento de inventario para trazabilidad
+     */
+    private function createInventoryMovement($item, $quantityBefore, $quantityAfter, $action, $data)
+    {
+        try {
+            $quantityChange = $quantityAfter - $quantityBefore;
+
+            // Determinar el tipo de movimiento
+            $movementType = 'adjustment'; // Por defecto es ajuste
+            $concept = '';
+
+            if ($action === 'create') {
+                $movementType = 'in';
+                $concept = 'Creación de item vía importación Excel';
+            } elseif ($action === 'update') {
+                if ($quantityChange > 0) {
+                    $movementType = 'in';
+                    $concept = 'Incremento de stock vía importación Excel';
+                } elseif ($quantityChange < 0) {
+                    $movementType = 'out';
+                    $concept = 'Reducción de stock vía importación Excel';
+                } else {
+                    $movementType = 'adjustment';
+                    $concept = 'Actualización de datos vía importación Excel (sin cambio de stock)';
+                }
+            }
+
+            InventoryMovement::create([
+                'component_id' => $item->id,
+                'type' => $movementType,
+                'concept' => $concept,
+                'quantity' => abs($quantityChange),
+                'quantity_before' => $quantityBefore,
+                'quantity_after' => $quantityAfter,
+                'unit_cost' => $data['purchase_cost'] ?? 0,
+                'total_cost' => abs($quantityChange) * ($data['purchase_cost'] ?? 0),
+                'notes' => "Importación Excel: {$data['name']} - Categoría: {$data['category_name']}",
+                'reference' => $this->importReference,
+                'metadata' => json_encode([
+                    'import_action' => $action,
+                    'import_timestamp' => now()->toDateTimeString(),
+                    'item_type' => $item->type,
+                    'category_name' => $data['category_name'],
+                    'min_stock' => $data['min_stock'],
+                    'max_stock' => $data['max_stock']
+                ]),
+                'movement_date' => now(),
+                'created_by' => auth()->id() ?? 1,
+                'approved_by' => auth()->id() ?? 1,
+                'approved_at' => now()
+            ]);
+
+        } catch (\Exception $e) {
+            // Si falla el registro del movimiento, solo lo registramos en el log pero no detenemos la importación
+            \Log::warning('No se pudo crear movimiento de inventario para importación', [
+                'item_id' => $item->id,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     /**

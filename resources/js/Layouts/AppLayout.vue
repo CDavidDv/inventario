@@ -7,6 +7,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import NotificationCenter from '@/Components/NotificationCenter.vue';
+import QrScannerButton from '@/Components/QrScannerButton.vue';
 import {
     ChevronLeft,
     ChevronRight,
@@ -559,11 +560,14 @@ const canAny = (permissions) => {
                 </header>
 
                 <!-- Page Content -->
-                <main class="flex-1 overflow-auto bg-gray-50 main-content" :class="{ 'pt-16': headerVisible && isMobile }">                    
+                <main class="flex-1 overflow-auto bg-gray-50 main-content" :class="{ 'pt-16': headerVisible && isMobile }">
                     <slot />
                 </main>
             </div>
         </div>
+
+        <!-- Botón flotante de escáner QR (solo móviles) - Global en toda la app -->
+        <QrScannerButton />
     </div>
 </template>
 <style scoped>

@@ -243,7 +243,7 @@ class ItemController extends Controller
                 ->where('type', 'adjustment')->count(),
         ];
         
-        return inertia('Items/Show', [
+        return inertia('Inventario/Show', [
             'item' => $item,
             'movements' => $movements,
             'assignedElements' => $assignedElements,
@@ -800,10 +800,10 @@ class ItemController extends Controller
     {
         try {
             $type = $request->get('type', 'element'); // Por defecto solo elementos
-            
+
             $query = Item::with('category')
                 ->where('active', true);
-            
+
             // Filtrar por tipo según el tipo de item que se está creando/editando
             if ($type === 'kit') {
                 // Para kits: elementos y componentes
@@ -835,9 +835,91 @@ class ItemController extends Controller
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id()
             ]);
-            
+
             return response()->json([
                 'message' => 'Error al obtener los elementos disponibles',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Buscar item por código QR
+     * El código QR puede contener: ID, Nombre, ID-Nombre, ID Nombre, etc.
+     */
+    public function searchByQr(Request $request)
+    {
+        try {
+            $qrContent = $request->get('qr');
+
+            if (empty($qrContent)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se proporcionó contenido del QR'
+                ], 400);
+            }
+
+            $item = null;
+
+            // Intentar buscar por ID directo (si el QR solo contiene un número)
+            if (is_numeric($qrContent)) {
+                $item = Item::find($qrContent);
+            }
+
+            // Si no se encontró, intentar con patrones comunes: "ID-Nombre", "ID Nombre", "ID,Nombre"
+            if (!$item) {
+                // Separar por guión, espacio o coma
+                $parts = preg_split('/[-\s,]+/', $qrContent, 2);
+
+                if (count($parts) >= 1) {
+                    // Intentar buscar por ID en la primera parte
+                    if (is_numeric($parts[0])) {
+                        $item = Item::find($parts[0]);
+                    }
+
+                    // Si no se encontró por ID, intentar buscar por nombre completo o parcial
+                    if (!$item) {
+                        $searchTerm = $parts[0];
+                        if (count($parts) > 1) {
+                            $searchTerm = $parts[1]; // Usar la segunda parte como nombre
+                        }
+
+                        $item = Item::where('name', 'like', '%' . $searchTerm . '%')
+                            ->where('active', true)
+                            ->first();
+                    }
+                }
+            }
+
+            // Si aún no se encontró, buscar por nombre completo
+            if (!$item) {
+                $item = Item::where('name', 'like', '%' . $qrContent . '%')
+                    ->where('active', true)
+                    ->first();
+            }
+
+            if ($item) {
+                return response()->json([
+                    'success' => true,
+                    'item' => $item
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontró ningún item con ese código QR'
+                ], 404);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error searching by QR', [
+                'qr_content' => $request->get('qr'),
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al buscar el item',
                 'error' => $e->getMessage()
             ], 500);
         }

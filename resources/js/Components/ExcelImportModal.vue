@@ -193,7 +193,10 @@
                                         <div class="max-h-64 overflow-y-auto space-y-2">
                                             <div v-for="(error, index) in importResults.errors" :key="index"
                                                  class="bg-white rounded p-3 text-sm">
-                                                <p class="font-semibold text-red-800">Fila {{ error.row }}:</p>
+                                                <p class="font-semibold text-red-800">
+                                                    Fila {{ error.row }}
+                                                    <span v-if="error.name" class="text-gray-600 font-normal"> - {{ error.name }}</span>
+                                                </p>
                                                 <ul class="list-disc list-inside text-red-700 ml-4">
                                                     <li v-for="(err, errIndex) in error.errors" :key="errIndex">{{ err }}</li>
                                                 </ul>

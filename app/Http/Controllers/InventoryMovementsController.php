@@ -263,4 +263,115 @@ class InventoryMovementsController extends Controller
             'movements_by_concept' => $movementsByConcept
         ]);
     }
+
+    /**
+     * Ver importaciones/exportaciones Excel agrupadas
+     */
+    public function excelImports(Request $request)
+    {
+        // Obtener movimientos de importación Excel agrupados por referencia
+        $query = InventoryMovement::with(['component', 'user'])
+            ->where('reference', 'LIKE', 'IMPORT-%')
+            ->orderBy('movement_date', 'desc');
+
+        // Filtros
+        if ($request->filled('date_from')) {
+            $query->whereDate('movement_date', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('movement_date', '<=', $request->date_to);
+        }
+
+        if ($request->filled('user_id')) {
+            $query->where('created_by', $request->user_id);
+        }
+
+        // Agrupar por referencia (cada importación tiene una referencia única)
+        $movements = $query->get()->groupBy('reference')->map(function ($group) {
+            $first = $group->first();
+
+            return [
+                'reference' => $first->reference,
+                'date' => $first->movement_date,
+                'user' => $first->user,
+                'total_items' => $group->count(),
+                'items_created' => $group->where('concept', 'Creación de item vía importación Excel')->count(),
+                'items_updated' => $group->whereIn('concept', [
+                    'Incremento de stock vía importación Excel',
+                    'Reducción de stock vía importación Excel',
+                    'Actualización de datos vía importación Excel (sin cambio de stock)'
+                ])->count(),
+                'total_quantity_in' => $group->where('type', 'in')->sum('quantity'),
+                'total_quantity_out' => $group->where('type', 'out')->sum('quantity'),
+                'total_cost' => $group->sum('total_cost'),
+                'movements' => $group->map(function ($movement) {
+                    return [
+                        'id' => $movement->id,
+                        'type' => $movement->type,
+                        'type_label' => $movement->getTypeLabel(),
+                        'concept' => $movement->concept,
+                        'component' => $movement->component ? [
+                            'id' => $movement->component->id,
+                            'name' => $movement->component->name,
+                            'type' => $movement->component->type,
+                        ] : null,
+                        'quantity' => $movement->quantity,
+                        'quantity_before' => $movement->quantity_before,
+                        'quantity_after' => $movement->quantity_after,
+                        'unit_cost' => $movement->unit_cost,
+                        'total_cost' => $movement->total_cost,
+                        'notes' => $movement->notes,
+                        'metadata' => $movement->metadata,
+                    ];
+                })->values()
+            ];
+        })->values();
+
+        // Paginar manualmente
+        $perPage = 10;
+        $page = $request->input('page', 1);
+        $total = $movements->count();
+        $items = $movements->slice(($page - 1) * $perPage, $perPage)->values();
+
+        $paginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $total,
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        // Estadísticas
+        $stats = [
+            'total_imports' => InventoryMovement::where('reference', 'LIKE', 'IMPORT-%')
+                ->distinct('reference')
+                ->count(DB::raw('DISTINCT reference')),
+            'total_items_imported' => InventoryMovement::where('reference', 'LIKE', 'IMPORT-%')->count(),
+            'imports_today' => InventoryMovement::where('reference', 'LIKE', 'IMPORT-%')
+                ->whereDate('movement_date', today())
+                ->distinct('reference')
+                ->count(DB::raw('DISTINCT reference')),
+            'imports_this_month' => InventoryMovement::where('reference', 'LIKE', 'IMPORT-%')
+                ->whereMonth('movement_date', now()->month)
+                ->whereYear('movement_date', now()->year)
+                ->distinct('reference')
+                ->count(DB::raw('DISTINCT reference')),
+        ];
+
+        // Usuarios que han realizado importaciones
+        $users = User::whereIn('id', function($query) {
+            $query->select('created_by')
+                ->from('inventory_movements')
+                ->where('reference', 'LIKE', 'IMPORT-%')
+                ->distinct();
+        })->get(['id', 'name', 'apellido_p']);
+
+        return Inertia::render('InventoryMovements/ExcelImports', [
+            'imports' => $paginated,
+            'stats' => $stats,
+            'users' => $users,
+            'filters' => $request->only(['date_from', 'date_to', 'user_id'])
+        ]);
+    }
 }

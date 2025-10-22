@@ -248,6 +248,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Rutas de Movimientos de Inventario
     Route::prefix('inventory-movements')->name('inventory-movements.')->group(function () {
         Route::get('/', [InventoryMovementsController::class, 'index'])->name('index');
+        Route::get('/excel-imports', [InventoryMovementsController::class, 'excelImports'])->name('excel-imports');
         Route::get('/{movement}', [InventoryMovementsController::class, 'show'])->name('show');
         Route::get('/export/csv', [InventoryMovementsController::class, 'export'])->name('export');
         Route::get('/api/dashboard', [InventoryMovementsController::class, 'dashboard'])->name('dashboard');
@@ -269,7 +270,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/kits/{kit}/availability', [KitController::class, 'checkAvailability'])->name('kits.availability');
         Route::get('/suppliers/search', [SupplierController::class, 'search'])->name('suppliers.search');
         Route::get('/dashboard-stats', [ElementController::class, 'dashboardStats'])->name('dashboard-stats');
-        
+
+        // Búsqueda por QR
+        Route::get('/search-by-qr', [ItemController::class, 'searchByQr'])->name('search-by-qr');
+
         // API Routes para Analytics y Charts
         Route::get('/dashboard-kpis', [ReportsController::class, 'getDashboardKpis'])->name('dashboard-kpis');
         Route::get('/stock-movements-chart', [ReportsController::class, 'getStockMovementsChart'])->name('stock-movements-chart');
