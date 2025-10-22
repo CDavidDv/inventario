@@ -1,6 +1,6 @@
 <template>
     <!-- Botón flotante - solo visible en móviles -->
-    <div class="fixed bottom-6 right-6 z-50 md:hidden">
+    <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 md:hidden">
         <button
             @click="openScanner"
             class="bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-2xl transform transition-all duration-200 hover:scale-110 active:scale-95 flex items-center justify-center"
