@@ -401,16 +401,7 @@ const canAny = (permissions) => {
                                         </div>
                                     </NavLink>
 
-                                    <!-- Administración de Permisos
-                                    <NavLink v-if="can('manage-permissions')" :href="route('permissions.index')" :active="route().current('permissions.*')" :class="sidebarCollapsed ? 'justify-center' : 'justify-start'" class="text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
-                                        <div class="flex items-center gap-3">
-                                            <div class="text-white size-8" :class="sidebarCollapsed ? 'mr-0' : 'mr-3'">
-                                                <ShieldCheck class="size-full text-white" />
-                                            </div>
-                                            <span v-if="!sidebarCollapsed">Permisos</span>
-                                        </div>
-                                    </NavLink>
-                                    -->
+                                  
                                 </div>
                                                         
                             </div>

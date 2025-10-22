@@ -27,7 +27,7 @@
     >
       <div
         v-if="showNotifications"
-        class="absolute right-0 z-50 mt-2 w-96 bg-white rounded-md shadow-lg overflow-hidden ring-1 ring-black ring-opacity-5"
+        class="absolute right-0 z-50 mt-2 w-80 md:w-[26rem] bg-white rounded-md shadow-lg overflow-hidden ring-1 ring-black ring-opacity-5"
       >
         <!-- Header -->
         <div class="px-4 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
@@ -35,7 +35,7 @@
             <h3 class="text-lg font-medium text-gray-900">Notificaciones</h3>
             <span
               v-if="unreadCount > 0"
-              class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800"
+              class="ml-2 md:inline-flex hidden  items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800"
             >
               {{ unreadCount }} nuevas
             </span>
