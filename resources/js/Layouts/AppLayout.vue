@@ -453,7 +453,7 @@ const canAny = (permissions) => {
                         <ResponsiveNavLink v-if="can('view_dashboard')" :href="route('dashboard')" :active="route().current('dashboard')" class="text-white hover:bg-white/20 rounded-lg">
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="can('view_inventory')" :href="route('inventario.index')" :active="route().current('inventario.*')" class="text-white hover:bg-white/20 rounded-lg">
+                        <ResponsiveNavLink  :href="route('inventario.index')" :active="route().current('inventario.*')" class="text-white hover:bg-white/20 rounded-lg">
                             Inventario
                         </ResponsiveNavLink>
                         <ResponsiveNavLink v-if="can('view_supervisor_dashboard')" :href="route('supervisor.dashboard')" :active="route().current('supervisor.*')" class="text-white hover:bg-white/20 rounded-lg">
@@ -471,10 +471,11 @@ const canAny = (permissions) => {
                         <ResponsiveNavLink v-if="can('view_system_logs')" :href="route('system-logs.index')" :active="route().current('system-logs.*')" class="text-white hover:bg-white/20 rounded-lg">
                             Auditoría
                         </ResponsiveNavLink>
+                        <!--
                         <ResponsiveNavLink v-if="can('manage_permissions')" :href="route('permissions.index')" :active="route().current('permissions.*')" class="text-white hover:bg-white/20 rounded-lg">
                             Permisos
                         </ResponsiveNavLink>
-
+                        -->
                     </div>
 
                     <div class="p-4 border-t border-white/20">
