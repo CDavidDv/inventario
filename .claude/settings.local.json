@@ -18,7 +18,9 @@
       "Bash(del check_permissions.php)",
       "Bash(del C:xampphtdocsinventario-8index.php)",
       "Bash(npm run prod:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []
