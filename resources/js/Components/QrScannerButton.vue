@@ -155,9 +155,9 @@ const onDecode = async (result) => {
     const qrContent = result[0].rawValue
     scanResult.value = qrContent
 
-    // Buscar el item
+    // Buscar el item usando route() helper de Laravel
     try {
-        const response = await axios.get('/api/inventory/search-by-qr', {
+        const response = await axios.get(route('api.inventory.search-by-qr'), {
             params: { qr: qrContent }
         })
 
@@ -166,8 +166,8 @@ const onDecode = async (result) => {
 
             // Pequeño delay para cerrar el modal antes de navegar
             setTimeout(() => {
-                // Usar Inertia router que respeta el APP_URL base
-                router.visit(`/items/${response.data.item.id}`)
+                // Usar route() helper que respeta el APP_URL base y subdirectorios
+                router.visit(route('items.show', response.data.item.id))
             }, 300)
         } else {
             errorMessage.value = 'No se encontró ningún item con ese código QR'

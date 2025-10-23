@@ -1519,8 +1519,8 @@ function handleNewItemClick(type) {
 
 // Funciones de Exportación e Importación
 function exportItems(type) {
-    // Construir URL para exportación
-    window.location.href = `/inventory-excel/export?type=${type}`
+    // Usar route() helper de Laravel que respeta APP_URL y subdirectorios
+    window.location.href = route('inventory-excel.export', { type: type })
 }
 
 function openImportModal(type) {
