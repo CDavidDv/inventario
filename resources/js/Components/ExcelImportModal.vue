@@ -352,7 +352,7 @@ const loadPreview = async () => {
         const formData = new FormData()
         formData.append('file', file.value)
 
-        const response = await axios.post('/inventory-excel/preview', formData, {
+        const response = await axios.post(route('inventory-excel.preview'), formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -384,7 +384,7 @@ const processImport = async () => {
         formData.append('file', file.value)
         formData.append('type', props.type)
 
-        const response = await axios.post('/inventory-excel/import', formData, {
+        const response = await axios.post(route('inventory-excel.import'), formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -421,7 +421,7 @@ const processImport = async () => {
 
 const downloadTemplate = async () => {
     try {
-        window.location.href = `/inventory-excel/template?type=${props.type}`
+        window.location.href = route('inventory-excel.template', { type: props.type })
     } catch (error) {
         console.error('Error downloading template:', error)
         Swal.fire({

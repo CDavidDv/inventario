@@ -193,7 +193,8 @@ const onDecode = async (result) => {
             text: error.response?.data?.message || 'Error al buscar el item. Por favor, intenta de nuevo.',
             icon: 'error',
             confirmButtonText: 'Cerrar',
-            confirmButtonColor: '#ef4444'
+            confirmButtonColor: '#ef4444',
+            buttonsStyling: true,
         })
     }
 }

@@ -240,7 +240,7 @@ const handleSubmit = async () => {
         const movementType = props.action === 'add' ? 'add' : 'remove'
         const movementReason = getMovementReason()
 
-        const response = await axios.post(`/items/${props.item.id}/adjust-stock`, {
+        const response = await axios.post(route('items.adjust-stock', props.item.id), {
             quantity: parseFloat(form.quantity),
             type: movementType,
             reason: movementReason,

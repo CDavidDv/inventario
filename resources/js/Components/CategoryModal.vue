@@ -302,7 +302,7 @@ const resetCategoryForm = () => {
 
 const loadCategories = async () => {
     try {
-        const response = await axios.get(`/categories?type=${props.type}`)
+        const response = await axios.get(route('categories.index', { type: props.type }))
         categoriesList.value = response.data.map(cat => ({
             ...cat,
             items_count: cat.items?.length || 0
@@ -324,7 +324,7 @@ const confirmDeleteCategory = (category) => {
 
 const deleteCategory = async () => {
     try {
-        const response = await axios.delete(`/categories/${categoryToDelete.value.id}`)
+        const response = await axios.delete(route('categories.destroy', categoryToDelete.value.id))
         
         if (response.status === 200) {
             // Emitir evento para que el componente padre actualice su estado

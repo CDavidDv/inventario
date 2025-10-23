@@ -1076,7 +1076,7 @@ async function openModal(type, action, item = null) {
     // Si estamos editando un componente o kit, cargar sus elementos asignados ANTES de mostrar el modal
     if (action === 'edit' && item && (type === 'component' || type === 'kit')) {
         try {
-            const response = await axios.get(`/items/${item.id}/components`)
+            const response = await axios.get(route('items.components', item.id))
             // Crear una copia del item con los elementos asignados
             selectedItem.value = {
                 ...item,
@@ -1109,7 +1109,7 @@ async function openAssignmentModal(type, item) {
 
     // Cargar items asignados desde el backend
     try {
-        const response = await axios.get(`/items/${item.id}/components`)
+        const response = await axios.get(route('items.components', item.id))
         assignedItems.value = response.data
     } catch (error) {
         console.error('Error loading assigned items:', error)
@@ -1129,7 +1129,7 @@ function closeAssignmentModal() {
 
 async function removeAssignment(itemId) {
     try {
-        const response = await axios.delete(`/items/${currentItem.value.id}/unassign/${itemId}`)
+        const response = await axios.delete(route('items.unassign', [currentItem.value.id, itemId]))
 
         if (response.status === 200) {
             // Remover de la lista local
@@ -1180,7 +1180,7 @@ function confirmDelete(type, item) {
 
 async function deleteItem() {
     try {
-        const response = await axios.delete(`/items/${itemToDelete.value.id}`)
+        const response = await axios.delete(route('items.destroy', itemToDelete.value.id))
 
         if (response.status === 200) {
             // Remover el item del estado local
@@ -1213,7 +1213,7 @@ async function deleteItem() {
 async function toggleItemActive(type, item) {
     try {
 
-        const response = await axios.post(`/items/${item.id}/toggle-active`)
+        const response = await axios.post(route('items.toggle-active', item.id))
 
         if (response.status === 200) {
 
@@ -1252,7 +1252,7 @@ async function handleItemSubmit(formData) {
         const itemType = currentItemType.value
 
         if (itemModalAction.value === 'add') {
-            response = await axios.post(`/items`, {
+            response = await axios.post(route('items.store'), {
                 ...formData,
                 type: itemType
             })
@@ -1283,7 +1283,7 @@ async function handleItemSubmit(formData) {
             }
         } else if (itemModalAction.value === 'edit') {
 
-            response = await axios.put(`/items/${selectedItem.value.id}`, formData)
+            response = await axios.put(route('items.update', selectedItem.value.id), formData)
 
             if (response.status === 200) {
                 // Actualizar el item existente en el estado local
@@ -1302,7 +1302,7 @@ async function handleItemSubmit(formData) {
                 }
             }
         } else if (itemModalAction.value === 'assign') {
-            response = await axios.put(`/items/${selectedItem.value.id}`, {
+            response = await axios.put(route('items.update', selectedItem.value.id), {
                 ...selectedItem.value,
                 assignedTo: formData.assignedTo,
                 assignedElements: formData.assignedElements || []
