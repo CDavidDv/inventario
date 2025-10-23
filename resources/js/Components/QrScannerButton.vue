@@ -170,32 +170,11 @@ const onDecode = async (result) => {
                 router.visit(route('items.show', response.data.item.id))
             }, 300)
         } else {
-            errorMessage.value = 'No se encontró ningún item con ese código QR'
-
-            Swal.fire({
-                title: 'Item no encontrado',
-                text: `No se encontró ningún item con el código: ${qrContent}`,
-                icon: 'error',
-                confirmButtonText: 'Intentar de nuevo',
-                confirmButtonColor: '#10b981'
-            }).then(() => {
-                // Reiniciar scanner
-                scanResult.value = ''
-                errorMessage.value = ''
-            })
+            console.log('Item not found for QR:', qrContent)
         }
     } catch (error) {
         console.error('Error searching item:', error)
         errorMessage.value = 'Error al buscar el item'
-
-        Swal.fire({
-            title: 'Error de escaneo',
-            text: error.response?.data?.message || 'Error al buscar el item. Por favor, intenta de nuevo.',
-            icon: 'error',
-            confirmButtonText: 'Cerrar',
-            confirmButtonColor: '#ef4444',
-            buttonsStyling: true,
-        })
     }
 }
 </script>

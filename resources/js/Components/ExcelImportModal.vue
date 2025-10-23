@@ -1,7 +1,7 @@
 <template>
     <teleport to="body">
         <transition name="modal">
-            <div v-if="show" class="fixed inset-0 z-50 overflow-y-auto">
+            <div v-if="show" class="fixed inset-0 overflow-y-auto z-[99]">
                 <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
                     <!-- Overlay -->
                     <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" @click="close"></div>

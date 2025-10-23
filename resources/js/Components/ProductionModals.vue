@@ -6,7 +6,7 @@
         </template>
 
         <template #content>
-            <div class="space-y-4">
+            <div class="space-y-4 z-[99]">
                 <div>
                     <InputLabel for="element_id" value="Elemento" />
                     <select 

@@ -426,7 +426,7 @@ const canAny = (permissions) => {
             </nav>
 
             <!-- Sidebar mobile overlay -->
-            <div v-if="showingNavigationDropdown" class="fixed inset-0 z-40 md:hidden sidebar-overlay" @click="showingNavigationDropdown = false">
+            <div v-if="showingNavigationDropdown" class="fixed inset-0 z-10 md:hidden sidebar-overlay" @click="showingNavigationDropdown = false">
                 <div class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
             </div>
 
@@ -501,7 +501,7 @@ const canAny = (permissions) => {
                     leave-from-class="transform translate-y-0 opacity-100"
                     leave-to-class="transform -translate-y-full opacity-0"
                 >
-                    <header v-show="headerVisible" id="sidebar" class="md:hidden bg-primary-500 text-white px-4 py-2 border-b border-white/20 header-mobile fixed top-0 left-0 right-0 z-50">
+                    <header v-show="headerVisible" id="sidebar" class="md:hidden bg-primary-500 text-white px-4 py-2 border-b border-white/20 header-mobile fixed top-0 left-0 right-0 z-40">
                         <div class="flex items-center justify-between">
                             <button 
                                 @click="showingNavigationDropdown = true"
@@ -527,7 +527,7 @@ const canAny = (permissions) => {
                     leave-from-class="opacity-100 scale-100"
                     leave-to-class="opacity-0 scale-95"
                 >
-                    <div v-show="!headerVisible && lastScrollTop > 100" class="md:hidden fixed top-4 right-4 z-50">
+                    <div v-show="!headerVisible && lastScrollTop > 100" class="md:hidden fixed top-4 right-4 z-40">
                         <div id="slidebar" class="bg-primary-500/90 backdrop-blur-sm text-white p-2 rounded-full shadow-lg border border-white/20">
                             <ArrowUp class="h-5 w-5 animate-bounce" />
                         </div>
@@ -567,15 +567,15 @@ const canAny = (permissions) => {
 /* Estilos para el navbar responsive */
 @media (max-width: 768px) {
     .sidebar-mobile {
-        z-index: 9999;
+        z-index: 990;
     }
     
     .sidebar-overlay {
-        z-index: 9998;
+        z-index: 98;
     }
     
     .header-mobile {
-        z-index: 9997;
+        z-index: 97;
     }
 }
 

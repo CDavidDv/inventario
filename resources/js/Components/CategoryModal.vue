@@ -1,6 +1,7 @@
 <template>
-    <div v-if="show" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+    <Teleport to="body">
+        <div v-if="show" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[9999]" style="z-index: 9999;">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
             <!-- Header -->
             <div class="px-6 py-4 border-b border-gray-200">
                 <div class="flex items-center justify-between">
@@ -116,7 +117,7 @@
 
         <!-- Delete Category Confirmation Modal -->
         <div v-if="showDeleteCategoryModal"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[9999]" style="z-index: 10000;">
             <div class="bg-white rounded-lg shadow-xl w-full max-w-sm">
                 <div class="p-6">
                     <div class="flex items-center mb-4">
@@ -140,7 +141,8 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+    </Teleport>
 </template>
 
 <script setup>
