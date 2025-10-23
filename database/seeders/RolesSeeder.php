@@ -68,7 +68,7 @@ class RolesSeeder extends Seeder
             'view_movements',
             'manage_movements',
             'view_system_logs',
-            'manage_permissions'
+            'manage-permissions'
         ];
 
         foreach ($permissions as $permission) {

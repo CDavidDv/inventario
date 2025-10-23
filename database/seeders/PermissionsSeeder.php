@@ -78,8 +78,6 @@ class PermissionsSeeder extends Seeder
             // Configuración
             'view-settings' => 'Ver Configuración',
             'edit-settings' => 'Editar Configuración',
-
-            ''
         ];
 
         // Crear permisos

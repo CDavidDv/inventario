@@ -15,8 +15,7 @@ class InventoryDashboardController extends Controller
 {
     public function __construct()
     {
-        // Middleware temporalmente comentado - descomentar después de asignar permisos
-        // $this->middleware('permission:view_dashboard');
+        $this->middleware('permission:view_dashboard');
     }
 
     public function index()
