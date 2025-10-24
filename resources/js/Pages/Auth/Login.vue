@@ -37,6 +37,10 @@ const submit = () => {
     <Head title="Inicio de sesión" />
 
     <AuthenticationCard>
+
+        <div class="mb-4 text-2xl text-white text-center font-bold">
+            INVENARIO
+        </div>
         <template #logo>
             <AuthenticationCardLogo />
         </template>
