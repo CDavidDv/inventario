@@ -14,7 +14,7 @@ class UsersSeeder extends Seeder
         // Crear usuario admin
         $admin = User::create([
             'name' => 'Administrador',
-            'email' => 'admin@monkits.com',
+            'email' => 'ventas@monkits.com',
             'password' => Hash::make('vBOsB5NJtt4dYLy'),
             'active' => true,
         ]);

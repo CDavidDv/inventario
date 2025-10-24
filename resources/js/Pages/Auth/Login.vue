@@ -67,20 +67,24 @@ const submit = () => {
                     <span class="ms-2 text-sm text-gray-600">Recuérdame</span>
                 </label>
             </div> -->
-
+            
             <div class="flex items-center justify-end mt-4">
                 <PrimaryButton class="w-full h-10" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Login
                 </PrimaryButton>
             </div>
+            <div class="text-sm mt-1 w-full flex items-center justify-start gap-2 text-white">
+                Recuérdame
+                <Checkbox class="rounded-full" v-model:checked="form.remember" name="remember" />
+            </div>
             <div class="mt-2">
                 <img :src="`${$page.props.assetUrl}/images/logo-transparente.png`" alt="logo" class="w-1/2 mx-auto">
             </div>
-            <div class="mt-2 text-white text-center font-bold">
+            <!-- div class="mt-2 text-white text-center font-bold">
                 <Link :href="route('password.request')" class="text-sm">
                 Forgot your password? <span class="">Reset your password</span>
                 </Link>
-            </div>
+            </!-->
         </form>
     </AuthenticationCard>
 </template>
