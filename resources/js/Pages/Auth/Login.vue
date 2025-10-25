@@ -39,7 +39,7 @@ const submit = () => {
     <AuthenticationCard>
 
         <div class="mb-4 text-2xl text-white text-center font-bold">
-            INVENARIO
+            INVENTARIO
         </div>
         <template #logo>
             <AuthenticationCardLogo />
