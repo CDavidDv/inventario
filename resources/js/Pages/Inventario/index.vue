@@ -82,7 +82,7 @@
                             <h2 class="text-lg md:text-xl font-semibold text-gray-800">Elementos Individuales</h2>
                             <p class="text-sm md:text-base text-gray-600">Gestiona los elementos individuales de tu inventario</p>
                         </div>
-                        <div class="grid grid-cols-2 sm:flex sm:flex-row gap-2">
+                        <div v-if="canManageInventory" class="grid grid-cols-2 sm:flex sm:flex-row gap-2">
                             <!-- Botón Exportar -->
                             <div class="relative group">
                                 <button @click="exportItems('element')"
@@ -276,7 +276,7 @@
                             <h2 class="text-lg md:text-xl font-semibold text-gray-800">Componentes</h2>
                             <p class="text-sm md:text-base text-gray-600">Gestiona los componentes que tienen varios items asociados</p>
                         </div>
-                        <div class="grid grid-cols-2 sm:flex sm:flex-row gap-2">
+                        <div v-if="canManageInventory" class="grid grid-cols-2 sm:flex sm:flex-row gap-2">
                             <!-- Botón Exportar -->
                             <div class="relative group">
                                 <button @click="exportItems('component')"
@@ -472,7 +472,7 @@
                             <h2 class="text-lg md:text-xl font-semibold text-gray-800">Kits</h2>
                             <p class="text-sm md:text-base text-gray-600">Gestiona los kits que contienen múltiples elementos</p>
                         </div>
-                        <div class="grid grid-cols-2 sm:flex sm:flex-row gap-2">
+                        <div v-if="canManageInventory" class="grid grid-cols-2 sm:flex sm:flex-row gap-2">
                             <!-- Botón Exportar -->
                             <div class="relative group">
                                 <button @click="exportItems('kit')"
@@ -659,10 +659,9 @@
                         </div>
                     </div>
                 </div>
-
-
-                
             </div>
+
+
         </Container>
 
         <!-- MODAL PRINCIPAL PARA ITEMS -->
@@ -722,7 +721,11 @@ const props = defineProps({
     componentItems: Array,
     elements: Array,
     kits: Array,
-    components: Array
+    components: Array,
+    canManageInventory: {
+        type: Boolean,
+        default: false
+    }
 })
 
 //console.log('elements', props.elements)

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\InventoryMovement;
+use App\Models\Supplier;
+use App\Models\SystemLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +15,10 @@ class ItemController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:manage_inventory');
+        // Permitir show, searchByQr y adjustStock para todos los usuarios autenticados
+        // Los trabajadores pueden ajustar stock (acciones rápidas)
+        // Los demás métodos requieren el permiso manage_inventory
+        $this->middleware('permission:manage_inventory')->except(['show', 'searchByQr', 'adjustStock']);
     }
 
     /**
@@ -164,6 +169,16 @@ class ItemController extends Controller
 
             DB::commit();
 
+            // Registrar en auditoría
+            SystemLog::logAction(
+                'create',
+                'inventory',
+                "Nuevo item creado: {$item->name} (Tipo: {$item->type})",
+                $item,
+                null,
+                $item->toArray()
+            );
+
             // Cargar los elementos asignados para la respuesta
             $item->load(['category', 'components.component.category']);
 
@@ -242,13 +257,20 @@ class ItemController extends Controller
             'total_adjustments' => InventoryMovement::where('component_id', $item->id)
                 ->where('type', 'adjustment')->count(),
         ];
-        
+
+        // Obtener proveedores activos para las acciones rápidas
+        $suppliers = Supplier::where('status', 'active')
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
         return inertia('Inventario/Show', [
             'item' => $item,
             'movements' => $movements,
             'assignedElements' => $assignedElements,
             'usedInItems' => $usedInItems,
-            'stats' => $stats
+            'stats' => $stats,
+            'suppliers' => $suppliers,
+            'canEdit' => auth()->user()->can('manage_inventory')
         ]);
     }
 
@@ -378,6 +400,16 @@ class ItemController extends Controller
                 'updated_item' => $item->toArray()
             ]);
 
+            // Registrar en auditoría
+            SystemLog::logAction(
+                'update',
+                'inventory',
+                "Item actualizado: {$item->name}",
+                $item,
+                $originalData,
+                $item->toArray()
+            );
+
             // Cargar los elementos asignados para la respuesta
             $item->load(['category', 'components.component.category']);
 
@@ -408,8 +440,21 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         try {
+            $itemName = $item->name;
+            $itemData = $item->toArray();
+
             // En lugar de eliminar físicamente, marcamos como inactivo
             $item->update(['active' => false]);
+
+            // Registrar en auditoría
+            SystemLog::logAction(
+                'delete',
+                'inventory',
+                "Item desactivado: {$itemName}",
+                $item,
+                ['active' => true],
+                ['active' => false]
+            );
 
             return response()->json([
                 'message' => 'Item eliminado correctamente'
@@ -501,6 +546,7 @@ class ItemController extends Controller
             'type' => 'required|in:add,remove,set',
             'reason' => 'required|string|max:255',
             'concept' => 'nullable|string|max:255',
+            'supplier_id' => 'nullable|exists:supplier,id',
         ]);
 
         if ($validator->fails()) {
@@ -513,11 +559,12 @@ class ItemController extends Controller
         try {
             DB::beginTransaction();
 
-        $oldStock = $item->current_stock;
-            
+            $oldStock = $item->current_stock;
+
             switch ($request->type) {
                 case 'add':
                     $item->current_stock += $request->quantity;
+                    $movementType = 'in';
                     break;
                 case 'remove':
                     if ($item->current_stock < $request->quantity) {
@@ -526,16 +573,39 @@ class ItemController extends Controller
                         ], 422);
                     }
                     $item->current_stock -= $request->quantity;
+                    $movementType = 'out';
                     break;
                 case 'set':
                     $item->current_stock = $request->quantity;
+                    $movementType = 'adjustment';
                     break;
             }
 
             $item->save();
 
-            // Aquí podrías registrar el movimiento en la tabla de movimientos
-            // InventoryMovement::create([...]);
+            // Registrar el movimiento en la tabla de movimientos
+            $movement = InventoryMovement::create([
+                'component_id' => $item->id,
+                'supplier_id' => $request->supplier_id,
+                'type' => $movementType,
+                'concept' => $request->concept ?? $request->reason,
+                'quantity' => $request->quantity,
+                'quantity_before' => $oldStock,
+                'quantity_after' => $item->current_stock,
+                'movement_date' => now(),
+                'created_by' => auth()->id(),
+                'notes' => $request->reason
+            ]);
+
+            // Registrar en el log de auditoría
+            SystemLog::logAction(
+                'update',
+                'inventory',
+                "Ajuste de stock: {$request->reason} - Item: {$item->name}",
+                $item,
+                ['stock' => $oldStock],
+                ['stock' => $item->current_stock, 'quantity' => $request->quantity, 'type' => $movementType]
+            );
 
             DB::commit();
 

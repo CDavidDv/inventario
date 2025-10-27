@@ -37,6 +37,24 @@
                     <p v-if="errors.quantity" class="text-red-500 text-sm mt-1">{{ errors.quantity }}</p>
                 </div>
 
+                <!-- Proveedor (solo para agregar stock y devoluciones) -->
+                <div v-if="action === 'add' || action === 'return'">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Proveedor {{ action === 'add' ? '(opcional)' : '' }}
+                    </label>
+                    <select
+                        v-model="form.supplier_id"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        :class="{ 'border-red-500': errors.supplier_id }"
+                    >
+                        <option value="">Seleccionar proveedor</option>
+                        <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">
+                            {{ supplier.name }}
+                        </option>
+                    </select>
+                    <p v-if="errors.supplier_id" class="text-red-500 text-sm mt-1">{{ errors.supplier_id }}</p>
+                </div>
+
                 <!-- Concepto/Razón -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -107,7 +125,11 @@ import Swal from 'sweetalert2'
 const props = defineProps({
     show: Boolean,
     action: String, // 'add', 'defective', 'damaged', 'return', 'sale', 'mercadolibre', 'website'
-    item: Object
+    item: Object,
+    suppliers: {
+        type: Array,
+        default: () => []
+    }
 })
 
 const emit = defineEmits(['close', 'success'])
@@ -117,7 +139,8 @@ const errors = ref({})
 
 const form = reactive({
     quantity: '',
-    concept: ''
+    concept: '',
+    supplier_id: ''
 })
 
 const actionTitle = computed(() => {
@@ -198,6 +221,7 @@ const close = () => {
     if (!processing.value) {
         form.quantity = ''
         form.concept = ''
+        form.supplier_id = ''
         errors.value = {}
         emit('close')
     }
@@ -244,7 +268,8 @@ const handleSubmit = async () => {
             quantity: parseFloat(form.quantity),
             type: movementType,
             reason: movementReason,
-            concept: form.concept
+            concept: form.concept,
+            supplier_id: form.supplier_id || null
         })
 
         if (response.status === 200) {
@@ -296,6 +321,7 @@ watch(() => props.show, (newVal) => {
     if (!newVal) {
         form.quantity = ''
         form.concept = ''
+        form.supplier_id = ''
         errors.value = {}
     }
 })

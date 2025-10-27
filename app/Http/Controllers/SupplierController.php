@@ -102,20 +102,11 @@ class SupplierController extends Controller
         $assignedItemsCount = $supplier->assignedItems()->count();
         
         // Estadísticas de precios
-        $avgPurchasePrice = $supplier->suppliedMovements()
-            ->whereNotNull('unit_cost')
-            ->avg('unit_cost') ?? 0;
-            
-        $avgSellingPrice = $supplier->elementPrices()
-            ->whereNotNull('selling_price')
-            ->avg('selling_price') ?? 0;
+        $avgPurchasePrice = $supplier->getAveragePurchasePrice();
+        $avgSellingPrice = $supplier->getAverageSellingPrice();
             
         // Valor total de inventario basado en element_prices
-        $totalInventoryValue = $supplier->suppliedMovements()
-            ->join('items', 'element_prices.item_id', '=', 'items.id')
-            ->whereNotNull('element_prices.purchase_price')
-            ->selectRaw('SUM(items.current_stock * element_prices.purchase_price) as total')
-            ->value('total') ?? 0;
+        $totalInventoryValue = $supplier->getTotalInventoryValue();
 
         // Estadísticas de suministros recientes (últimos 30 días)
         $recentSuppliesStats = $supplier->suppliedMovements()

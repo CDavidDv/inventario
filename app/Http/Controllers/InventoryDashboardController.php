@@ -191,7 +191,8 @@ class InventoryDashboardController extends Controller
             'elements' => $elements,
             'kits' => $kits,
             'components' => $components,
-            'avalibleItems' => $avalibleItems
+            'avalibleItems' => $avalibleItems,
+            'canManageInventory' => auth()->user()->can('manage_inventory')
         ]);
     }
 

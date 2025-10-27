@@ -102,7 +102,10 @@ class RolesSeeder extends Seeder
             'add_stock',
             'remove_stock',
             'adjust_stock',
-            'view_inventory'
+            'view_inventory',
+            'view_production',
+            'manage_production',
+            'view_movements'
         ]);
 
         $user->givePermissionTo([

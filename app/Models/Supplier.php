@@ -127,6 +127,7 @@ class Supplier extends Model
     public function getAveragePurchasePrice()
     {
         return $this->elementPrices()
+                    ->where('is_active', true)
                     ->whereNotNull('purchase_price')
                     ->avg('purchase_price') ?? 0;
     }
@@ -134,6 +135,7 @@ class Supplier extends Model
     public function getAverageSellingPrice()
     {
         return $this->elementPrices()
+                    ->where('is_active', true)
                     ->whereNotNull('selling_price')
                     ->avg('selling_price') ?? 0;
     }

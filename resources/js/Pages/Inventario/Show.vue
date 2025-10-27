@@ -258,6 +258,7 @@
             :show="showActionModal"
             :action="currentAction"
             :item="item"
+            :suppliers="suppliers"
             @close="closeActionModal"
             @success="handleActionSuccess"
         />
@@ -290,7 +291,15 @@ import {
 const props = defineProps({
     item: Object,
     movements: Object,
-    assignedElements: Array
+    assignedElements: Array,
+    suppliers: {
+        type: Array,
+        default: () => []
+    },
+    canEdit: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const showActionModal = ref(false)

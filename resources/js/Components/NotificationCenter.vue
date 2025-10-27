@@ -41,6 +41,7 @@
             </span>
           </div>
           <div class="flex items-center space-x-2">
+            <!--
             <button
               v-if="notifications.length > 0"
               @click="markAllAsRead"
@@ -48,6 +49,7 @@
             >
               Marcar todas como leídas
             </button>
+            --> 
             <button
               @click="closeNotifications"
               class="text-gray-400 hover:text-gray-600"
