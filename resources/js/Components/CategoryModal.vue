@@ -227,8 +227,14 @@ const handleCategorySubmit = async () => {
     }
 
     try {
-        const url = categoryModalType.value === 'add' ? '/inventario/categories' : `/inventario/categories/${categoryFormData.id}`
+        let url;
         const method = categoryModalType.value === 'add' ? 'POST' : 'PUT'
+
+        if (categoryModalType.value === 'add') {
+            url = route('inventario.categories.store')
+        } else {
+            url = route('inventario.categories.update', categoryFormData.id)
+        }
         
         const requestData = {
             ...categoryFormData,
