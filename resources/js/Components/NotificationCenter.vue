@@ -251,7 +251,7 @@ const markAsRead = (notification) => {
     
     // Llamar API para marcar como leída
     if (notification.data?.alert_id || alertId !== notification.id) {
-      axios.post(`api/notifications/${alertId}/mark-read`)
+      axios.post(`/api/notifications/${alertId}/mark-read`)
         .catch(error => {
           console.error('Error al marcar notificación como leída:', error)
           notification.read = false
@@ -267,7 +267,7 @@ const markAllAsRead = () => {
   const unreadNotifications = notifications.value.filter(n => !n.read)
   unreadNotifications.forEach(n => n.read = true)
 
-  axios.post('api/notifications/mark-all-read')
+  axios.post('/api/notifications/mark-all-read')
     .catch(error => {
       console.error('Error al marcar todas las notificaciones como leídas:', error)
       unreadNotifications.forEach(n => n.read = false)
@@ -280,19 +280,19 @@ const navigateToItem = (notification) => {
   // Determinar la ruta según el tipo de item
   if (notification.data?.item_id) {
     // Es un item del sistema principal
-    router.visit(`/items/${notification.data.item_id}`)
+    router.visit(route('items.show', notification.data.item_id))
   } else if (notification.data?.item) {
     // Tiene datos del item, usar el ID
-    router.visit(`/items/${notification.data.item.id}`)
+    router.visit(route('items.show', notification.data.item.id))
   } else {
     // Si no tiene datos específicos, ir a la página de inventario
-    router.visit('/inventario')
+    router.visit(route('inventario.index'))
   }
 }
 
 const loadNotifications = async () => {
   try {
-    const response = await axios.get('api/notifications')
+    const response = await axios.get('/api/notifications')
     if (response.data.success) {
       notifications.value = response.data.data
     }
