@@ -227,7 +227,7 @@ const handleCategorySubmit = async () => {
     }
 
     try {
-        const url = categoryModalType.value === 'add' ? '/categories' : `/categories/${categoryFormData.id}`
+        const url = categoryModalType.value === 'add' ? '/inventario/categories' : `/inventario/categories/${categoryFormData.id}`
         const method = categoryModalType.value === 'add' ? 'POST' : 'PUT'
         
         const requestData = {
@@ -304,7 +304,7 @@ const resetCategoryForm = () => {
 
 const loadCategories = async () => {
     try {
-        const response = await axios.get(route('categories.index', { type: props.type }))
+        const response = await axios.get(route('inventario.categories.index', { type: props.type }))
         categoriesList.value = response.data.map(cat => ({
             ...cat,
             items_count: cat.items?.length || 0
@@ -326,7 +326,7 @@ const confirmDeleteCategory = (category) => {
 
 const deleteCategory = async () => {
     try {
-        const response = await axios.delete(route('categories.destroy', categoryToDelete.value.id))
+        const response = await axios.delete(route('inventario.categories.destroy', categoryToDelete.value.id))
         
         if (response.status === 200) {
             // Emitir evento para que el componente padre actualice su estado

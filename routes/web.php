@@ -34,6 +34,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/', [InventoryDashboardController::class, 'index'])->name('index');
         Route::get('/stock-chart', [InventoryDashboardController::class, 'getStockChart'])->name('stock-chart');
         Route::post('/alerts/{alert}/read', [InventoryDashboardController::class, 'markAlertAsRead'])->name('alerts.read');
+
+        // Rutas de Categorías
+        Route::resource('categories', CategoryController::class);
+        Route::post('/categories/{category}/deactivate', [CategoryController::class, 'deactivate'])->name('categories.deactivate');
+        Route::post('/categories/{category}/reactivate', [CategoryController::class, 'reactivate'])->name('categories.reactivate');
+        Route::get('/categories/type/{type}', [CategoryController::class, 'getByType'])->name('categories.by-type');
     });
     
     // Rutas de Items
@@ -59,12 +65,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/preview', [InventoryExcelController::class, 'preview'])->name('preview');
         Route::get('/template', [InventoryExcelController::class, 'downloadTemplate'])->name('template');
     });
-
-    // Rutas de Categorías
-    Route::resource('categories', CategoryController::class);
-    Route::post('/categories/{category}/deactivate', [CategoryController::class, 'deactivate'])->name('categories.deactivate');
-    Route::post('/categories/{category}/reactivate', [CategoryController::class, 'reactivate'])->name('categories.reactivate');
-    Route::get('/categories/type/{type}', [CategoryController::class, 'getByType'])->name('categories.by-type');
 
     Route::get('/profile',  [ProfileController::class, 'show'])->name('profile.show');
     
