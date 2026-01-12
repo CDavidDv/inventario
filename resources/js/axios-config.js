@@ -4,8 +4,9 @@ import axios from 'axios';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-// Configurar la URL base - obtener desde el meta tag de Laravel o usar el origin
-const baseUrl = document.querySelector('meta[name="app-url"]')?.getAttribute('content') || window.location.origin;
+// Configurar la URL base - usar rutas relativas basadas en el subdirectorio
+// El BASE_URL se obtiene de vite.config.js
+const baseUrl = import.meta.env.BASE_URL || '/';
 axios.defaults.baseURL = baseUrl;
 
 // Variable para rastrear si ya estamos refrescando el token

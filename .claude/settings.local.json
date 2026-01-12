@@ -22,7 +22,11 @@
       "Bash(tasklist:*)",
       "Bash(findstr:*)",
       "Bash(cmd /c del C:xampphtdocsinventario-8check_permissions.php)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(grep:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

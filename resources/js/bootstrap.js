@@ -9,9 +9,9 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-// Configurar baseURL para subdirectorio
+// Configurar baseURL para subdirectorio usando la ruta relativa
 const baseUrl = import.meta.env.BASE_URL || '/';
-window.axios.defaults.baseURL = baseUrl === '/' ? '' : baseUrl.replace(/\/$/, '');
+window.axios.defaults.baseURL = baseUrl;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
