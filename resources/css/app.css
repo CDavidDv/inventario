@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* SweetAlert2 Styles Override */
+.swal2-popup button {
+  margin: 0 !important;
+  padding: 10px 32px !important;
+}
+
+.swal2-confirm,
+.swal2-deny,
+.swal2-cancel {
+  background-color: #3085d6 !important;
+  color: white !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  border-radius: 4px !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.swal2-confirm:hover {
+  background-color: #1e5ba8 !important;
+}
+
+.swal2-deny {
+  background-color: #dc3545 !important;
+}
+
+.swal2-deny:hover {
+  background-color: #bb2d3b !important;
+}
+
+.swal2-cancel {
+  background-color: #6c757d !important;
+}
+
+.swal2-cancel:hover {
+  background-color: #5a6268 !important;
+}
+
+.swal2-styled:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(48, 133, 214, 0.3) !important;
+}
