@@ -29,8 +29,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // AUTH ROUTES
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name("dashboard");
         
-    // Rutas de Inventario
-    Route::prefix('inventario')->name('inventario.')->group(function () {
+    // Rutas de Inventario (Dashboard y Gestión)
+    Route::prefix('dashboard-inventory')->name('inventario.')->group(function () {
         Route::get('/', [InventoryDashboardController::class, 'index'])->name('index');
         Route::get('/stock-chart', [InventoryDashboardController::class, 'getStockChart'])->name('stock-chart');
         Route::post('/alerts/{alert}/read', [InventoryDashboardController::class, 'markAlertAsRead'])->name('alerts.read');
@@ -152,7 +152,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/{supplier}/toggle-status', [SupplierController::class, 'toggleStatus'])->name('toggle-status');
     });
 
-    Route::prefix('/production')->name('production.')->group(function () {
+    Route::prefix('inventory-production')->name('production.')->group(function () {
         Route::get('/', [\App\Http\Controllers\ProductionController::class, 'index'])->name('index');
         Route::get('/create', [\App\Http\Controllers\ProductionController::class, 'create'])->name('create');
         Route::post('/', [\App\Http\Controllers\ProductionController::class, 'store'])->name('store');
@@ -164,12 +164,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/{production}/complete', [\App\Http\Controllers\ProductionController::class, 'complete'])->name('complete');
         Route::post('/{production}/cancel', [\App\Http\Controllers\ProductionController::class, 'cancel'])->name('cancel');
         Route::post('/{production}/update-progress', [\App\Http\Controllers\ProductionController::class, 'updateProgress'])->name('update-progress');
-        
+
         // Nuevas rutas para agregar elementos, componentes y kits
         Route::post('/add-element', [\App\Http\Controllers\ProductionController::class, 'addElement'])->name('add-element');
         Route::post('/add-component', [\App\Http\Controllers\ProductionController::class, 'addComponent'])->name('add-component');
         Route::post('/add-kit', [\App\Http\Controllers\ProductionController::class, 'addKit'])->name('add-kit');
-        
+
         // Rutas para restar del inventario
         Route::post('/mark-defective', [\App\Http\Controllers\ProductionController::class, 'markAsDefective'])->name('mark-defective');
         Route::post('/mark-damaged', [\App\Http\Controllers\ProductionController::class, 'markAsDamaged'])->name('mark-damaged');
@@ -178,7 +178,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/register-sale', [\App\Http\Controllers\ProductionController::class, 'registerSale'])->name('register-sale');
         Route::post('/register-mercadolibre-sale', [\App\Http\Controllers\ProductionController::class, 'registerMercadoLibreSale'])->name('register-mercadolibre-sale');
         Route::post('/register-website-sale', [\App\Http\Controllers\ProductionController::class, 'registerWebsiteSale'])->name('register-website-sale');
-        
+
         // Rutas API para obtener datos
         Route::get('/api/items/{type}', [\App\Http\Controllers\ProductionController::class, 'getAvailableItems'])->name('api.items');
         Route::get('/api/suppliers', [\App\Http\Controllers\ProductionController::class, 'getActiveSuppliers'])->name('api.suppliers');
