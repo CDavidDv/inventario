@@ -9,8 +9,8 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-// Configurar baseURL para llamadas AJAX al subdirectorio /inventario
-window.axios.defaults.baseURL = '/inventario';
+// NO establecer baseURL global - causa conflictos con Inertia
+// Usar rutas completas en cada llamada si es necesario
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

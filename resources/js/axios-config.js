@@ -4,8 +4,17 @@ import axios from 'axios';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-// Configurar baseURL para el subdirectorio /inventario
-axios.defaults.baseURL = '/inventario';
+// NO establecer baseURL global - puede causar conflictos
+// Las rutas relativas funcionarán correctamente sin baseURL
+
+// Interceptor para agregar /inventario a las rutas que no lo tengan
+axios.interceptors.request.use(config => {
+    // Si la URL es relativa y no comienza con /inventario, agregarla
+    if (config.url && !config.url.startsWith('http') && !config.url.startsWith('/inventario') && !config.url.startsWith('/api')) {
+        config.url = '/inventario' + config.url;
+    }
+    return config;
+});
 
 // Variable para rastrear si ya estamos refrescando el token
 let isRefreshingToken = false;

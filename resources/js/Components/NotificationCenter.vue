@@ -251,7 +251,7 @@ const markAsRead = (notification) => {
     
     // Llamar API para marcar como leída
     if (notification.data?.alert_id || alertId !== notification.id) {
-      axios.post(`/api/notifications/${alertId}/mark-read`)
+      axios.post(`/inventario/api/notifications/${alertId}/mark-read`)
         .catch(error => {
           console.error('Error al marcar notificación como leída:', error)
           notification.read = false
@@ -267,7 +267,7 @@ const markAllAsRead = () => {
   const unreadNotifications = notifications.value.filter(n => !n.read)
   unreadNotifications.forEach(n => n.read = true)
 
-  axios.post('/api/notifications/mark-all-read')
+  axios.post('/inventario/api/notifications/mark-all-read')
     .catch(error => {
       console.error('Error al marcar todas las notificaciones como leídas:', error)
       unreadNotifications.forEach(n => n.read = false)
@@ -292,7 +292,7 @@ const navigateToItem = (notification) => {
 
 const loadNotifications = async () => {
   try {
-    const response = await axios.get('/api/notifications')
+    const response = await axios.get('/inventario/api/notifications')
     if (response.data.success) {
       notifications.value = response.data.data
     }
