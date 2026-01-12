@@ -442,7 +442,7 @@ const closeKitModal = () => {
 
 // Métodos de envío de formularios
 const submitElementForm = () => {
-    elementForm.post('/production-management/add-element', {
+    elementForm.post('/inventario/production-management/add-element', {
         onSuccess: () => {
             closeElementModal()
             emit('success', 'Elemento agregado exitosamente')

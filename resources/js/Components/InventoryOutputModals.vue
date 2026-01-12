@@ -929,7 +929,7 @@ const closeWebsiteModal = () => {
 
 // Métodos de envío
 const submitDefectiveForm = () => {
-    defectiveForm.post('/production-management/mark-defective', {
+    defectiveForm.post('/inventario/production-management/mark-defective', {
         onSuccess: () => {
             closeDefectiveModal()
             emit('success', 'Item marcado como defectuoso exitosamente')
@@ -938,7 +938,7 @@ const submitDefectiveForm = () => {
 }
 
 const submitDamagedForm = () => {
-    damagedForm.post('/production-management/mark-damaged', {
+    damagedForm.post('/inventario/production-management/mark-damaged', {
         onSuccess: () => {
             closeDamagedModal()
             emit('success', 'Item marcado como dañado exitosamente')
@@ -947,7 +947,7 @@ const submitDamagedForm = () => {
 }
 
 const submitReturnForm = () => {
-    returnForm.post('/production-management/register-return', {
+    returnForm.post('/inventario/production-management/register-return', {
         onSuccess: () => {
             closeReturnModal()
             emit('success', 'Devolución registrada exitosamente')
@@ -956,7 +956,7 @@ const submitReturnForm = () => {
 }
 
 const submitSaleForm = () => {
-    saleForm.post('/production-management/register-sale', {
+    saleForm.post('/inventario/production-management/register-sale', {
         onSuccess: () => {
             closeSaleModal()
             emit('success', 'Venta registrada exitosamente')
@@ -965,7 +965,7 @@ const submitSaleForm = () => {
 }
 
 const submitInternetSaleForm = () => {
-    internetSaleForm.post('/production-management/register-internet-sale', {
+    internetSaleForm.post('/inventario/production-management/register-internet-sale', {
         onSuccess: () => {
             closeInternetSaleModal()
             emit('success', 'Venta por internet registrada exitosamente')
@@ -974,7 +974,7 @@ const submitInternetSaleForm = () => {
 }
 
 const submitMercadoLibreForm = () => {
-    mercadoLibreForm.post('/production-management/register-mercadolibre-sale', {
+    mercadoLibreForm.post('/inventario/production-management/register-mercadolibre-sale', {
         onSuccess: () => {
             closeMercadoLibreModal()
             emit('success', 'Venta de MercadoLibre registrada exitosamente')
@@ -983,7 +983,7 @@ const submitMercadoLibreForm = () => {
 }
 
 const submitWebsiteForm = () => {
-    websiteForm.post('/production-management/register-website-sale', {
+    websiteForm.post('/inventario/production-management/register-website-sale', {
         onSuccess: () => {
             closeWebsiteModal()
             emit('success', 'Venta por página web registrada exitosamente')
