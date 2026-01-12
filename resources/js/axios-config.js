@@ -4,9 +4,8 @@ import axios from 'axios';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-// NO establecer baseURL global - puede interferir con Inertia
-// Las rutas relativas funcionarán correctamente sin baseURL
-// Si necesitas un baseURL específico, configúralo en cada componente que lo use
+// Configurar baseURL para el subdirectorio /inventario
+axios.defaults.baseURL = '/inventario';
 
 // Variable para rastrear si ya estamos refrescando el token
 let isRefreshingToken = false;
