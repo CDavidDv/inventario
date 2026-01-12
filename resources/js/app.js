@@ -4,6 +4,11 @@ import '../css/app.css';
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { InertiaProgress } from '@inertiajs/progress';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+// Hacer SweetAlert disponible globalmente
+window.Swal = Swal;
 
 InertiaProgress.init({ color: '#4F46E5' });
 
