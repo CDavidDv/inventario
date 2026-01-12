@@ -30,7 +30,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name("dashboard");
         
     // Rutas de Inventario (Dashboard y Gestión)
-    Route::prefix('dashboard-inventory')->name('inventario.')->group(function () {
+    Route::prefix('inventory-dashboard')->name('inventario.')->group(function () {
         Route::get('/', [InventoryDashboardController::class, 'index'])->name('index');
         Route::get('/stock-chart', [InventoryDashboardController::class, 'getStockChart'])->name('stock-chart');
         Route::post('/alerts/{alert}/read', [InventoryDashboardController::class, 'markAlertAsRead'])->name('alerts.read');
@@ -40,6 +40,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/categories/{category}/deactivate', [CategoryController::class, 'deactivate'])->name('categories.deactivate');
         Route::post('/categories/{category}/reactivate', [CategoryController::class, 'reactivate'])->name('categories.reactivate');
         Route::get('/categories/type/{type}', [CategoryController::class, 'getByType'])->name('categories.by-type');
+    });
+
+    // Ruta de redirección para la antigua ruta /inventario (evita conflicto con el subdirectorio)
+    Route::get('/inventario', function () {
+        return redirect()->route('inventario.index');
     });
     
     // Rutas de Items
@@ -152,7 +157,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/{supplier}/toggle-status', [SupplierController::class, 'toggleStatus'])->name('toggle-status');
     });
 
-    Route::prefix('inventory-production')->name('production.')->group(function () {
+    Route::prefix('production-management')->name('production.')->group(function () {
         Route::get('/', [\App\Http\Controllers\ProductionController::class, 'index'])->name('index');
         Route::get('/create', [\App\Http\Controllers\ProductionController::class, 'create'])->name('create');
         Route::post('/', [\App\Http\Controllers\ProductionController::class, 'store'])->name('store');

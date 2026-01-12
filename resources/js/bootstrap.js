@@ -9,9 +9,8 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-// Configurar baseURL para subdirectorio usando la ruta relativa
-const baseUrl = import.meta.env.BASE_URL || '/';
-window.axios.defaults.baseURL = baseUrl;
+// NO establecer baseURL global - Inertia maneja sus propias rutas
+// Los componentes que necesiten un baseURL específico lo pueden establecer localmente
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

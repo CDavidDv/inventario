@@ -840,9 +840,9 @@ const websiteForm = useForm({
 const loadAllItems = async () => {
     try {
         const [elements, components, kits] = await Promise.all([
-            axios.get('/production/api/items/element'),
-            axios.get('/production/api/items/component'),
-            axios.get('/production/api/items/kit')
+            axios.get('/production-management/api/items/element'),
+            axios.get('/production-management/api/items/component'),
+            axios.get('/production-management/api/items/kit')
         ])
         
         allItems.value = [
@@ -929,7 +929,7 @@ const closeWebsiteModal = () => {
 
 // Métodos de envío
 const submitDefectiveForm = () => {
-    defectiveForm.post('/production/mark-defective', {
+    defectiveForm.post('/production-management/mark-defective', {
         onSuccess: () => {
             closeDefectiveModal()
             emit('success', 'Item marcado como defectuoso exitosamente')
@@ -938,7 +938,7 @@ const submitDefectiveForm = () => {
 }
 
 const submitDamagedForm = () => {
-    damagedForm.post('/production/mark-damaged', {
+    damagedForm.post('/production-management/mark-damaged', {
         onSuccess: () => {
             closeDamagedModal()
             emit('success', 'Item marcado como dañado exitosamente')
@@ -947,7 +947,7 @@ const submitDamagedForm = () => {
 }
 
 const submitReturnForm = () => {
-    returnForm.post('/production/register-return', {
+    returnForm.post('/production-management/register-return', {
         onSuccess: () => {
             closeReturnModal()
             emit('success', 'Devolución registrada exitosamente')
@@ -956,7 +956,7 @@ const submitReturnForm = () => {
 }
 
 const submitSaleForm = () => {
-    saleForm.post('/production/register-sale', {
+    saleForm.post('/production-management/register-sale', {
         onSuccess: () => {
             closeSaleModal()
             emit('success', 'Venta registrada exitosamente')
@@ -965,7 +965,7 @@ const submitSaleForm = () => {
 }
 
 const submitInternetSaleForm = () => {
-    internetSaleForm.post('/production/register-internet-sale', {
+    internetSaleForm.post('/production-management/register-internet-sale', {
         onSuccess: () => {
             closeInternetSaleModal()
             emit('success', 'Venta por internet registrada exitosamente')
@@ -974,7 +974,7 @@ const submitInternetSaleForm = () => {
 }
 
 const submitMercadoLibreForm = () => {
-    mercadoLibreForm.post('/production/register-mercadolibre-sale', {
+    mercadoLibreForm.post('/production-management/register-mercadolibre-sale', {
         onSuccess: () => {
             closeMercadoLibreModal()
             emit('success', 'Venta de MercadoLibre registrada exitosamente')
@@ -983,7 +983,7 @@ const submitMercadoLibreForm = () => {
 }
 
 const submitWebsiteForm = () => {
-    websiteForm.post('/production/register-website-sale', {
+    websiteForm.post('/production-management/register-website-sale', {
         onSuccess: () => {
             closeWebsiteModal()
             emit('success', 'Venta por página web registrada exitosamente')

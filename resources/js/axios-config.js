@@ -4,10 +4,9 @@ import axios from 'axios';
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-// Configurar la URL base - usar rutas relativas basadas en el subdirectorio
-// El BASE_URL se obtiene de vite.config.js
-const baseUrl = import.meta.env.BASE_URL || '/';
-axios.defaults.baseURL = baseUrl;
+// NO establecer baseURL global - puede interferir con Inertia
+// Las rutas relativas funcionarán correctamente sin baseURL
+// Si necesitas un baseURL específico, configúralo en cada componente que lo use
 
 // Variable para rastrear si ya estamos refrescando el token
 let isRefreshingToken = false;
