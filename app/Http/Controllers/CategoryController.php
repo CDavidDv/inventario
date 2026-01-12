@@ -176,11 +176,12 @@ class CategoryController extends Controller
                 ], 422);
             }
 
-            // En lugar de eliminar físicamente, marcamos como inactivo
-            $category->update(['active' => false]);
+            // Eliminar la categoría permanentemente
+            $categoryName = $category->name;
+            $category->delete();
 
             return response()->json([
-                'message' => 'Categoría eliminada correctamente'
+                'message' => "Categoría '{$categoryName}' eliminada correctamente"
             ]);
 
         } catch (\Exception $e) {

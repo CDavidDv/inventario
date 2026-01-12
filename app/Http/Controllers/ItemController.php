@@ -26,7 +26,8 @@ class ItemController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Item::with(['category', 'components.component.category']); // Incluir todos los items (activos e inactivos)
+        $query = Item::with(['category', 'components.component.category'])
+            ->where('active', true); // Solo mostrar items ACTIVOS
 
         // Filtrar por tipo si se especifica
         if ($request->has('type')) {
@@ -441,20 +442,21 @@ class ItemController extends Controller
     {
         try {
             $itemName = $item->name;
+            $itemId = $item->id;
             $itemData = $item->toArray();
 
-            // En lugar de eliminar físicamente, marcamos como inactivo
-            $item->update(['active' => false]);
-
-            // Registrar en auditoría
+            // Registrar en auditoría ANTES de eliminar
             SystemLog::logAction(
                 'delete',
                 'inventory',
-                "Item desactivado: {$itemName}",
-                $item,
-                ['active' => true],
-                ['active' => false]
+                "Item eliminado permanentemente: {$itemName}",
+                null,
+                $itemData,
+                []
             );
+
+            // Eliminar el item permanentemente de la BD
+            $item->delete();
 
             return response()->json([
                 'message' => 'Item eliminado correctamente'
@@ -485,6 +487,7 @@ class ItemController extends Controller
 
         $items = Item::with(['category'])
             ->where('type', $type)
+            ->where('active', true)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -498,6 +501,7 @@ class ItemController extends Controller
     {
         $items = Item::with(['category'])
             ->where('category_id', $categoryId)
+            ->where('active', true)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -513,7 +517,7 @@ class ItemController extends Controller
         $type = $request->get('type');
         $categoryId = $request->get('category_id');
 
-        $items = Item::with(['category']);
+        $items = Item::with(['category'])->where('active', true);
 
         if ($query) {
             $items->where(function ($q) use ($query) {

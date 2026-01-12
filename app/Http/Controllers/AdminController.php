@@ -127,10 +127,11 @@ class AdminController extends Controller
 
     public function deleteItem(Item $item)
     {
-        $item->update(['active' => false]);
-        
+        $itemName = $item->name;
+        $item->delete();
+
         return redirect()->route('admin.items')
-            ->with('success', 'Iteme desactivado exitosamente');
+            ->with('success', "Item '{$itemName}' eliminado exitosamente");
     }
 
     // Gestión de Kits
